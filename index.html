@@ -3,810 +3,1270 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grimeder | Grime Artist Name Generator</title>
-  <meta name="description" content="Generate your grime artist name with Grimeder." />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Grimeder</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700;900&display=swap');
-
     :root {
-      --grimeder-green: #10b981;
-      --grimeder-lime: #a3e635;
-      --grimeder-dark: #111827;
+      --bg:#070b10; --panel:#111827; --panel2:#1f2937; --text:#f9fafb;
+      --muted:#9ca3af; --lime:#a3e635; --green:#10b981; --red:#dc2626;
+    }
+
+    * {
+      box-sizing:border-box;
     }
 
     body {
-      font-family: 'Roboto Mono', monospace;
-      min-height: 100vh;
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      color:var(--text);
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
       background:
-        radial-gradient(circle at top left, rgba(16, 185, 129, 0.18), transparent 32rem),
-        radial-gradient(circle at bottom right, rgba(163, 230, 53, 0.12), transparent 28rem),
-        #030712;
+        radial-gradient(circle at top left, rgba(163,230,53,.14), transparent 30rem),
+        radial-gradient(circle at bottom right, rgba(16,185,129,.12), transparent 28rem),
+        linear-gradient(145deg,#020617,#0b1120 45%,#070b10);
     }
 
-    .neon-text {
-      color: var(--grimeder-green);
-      text-shadow:
-        0 0 7px #059669,
-        0 0 13px #047857,
-        0 0 26px rgba(16, 185, 129, 0.65);
+    .app {
+      width:min(760px,100%);
+      background:rgba(17,24,39,.95);
+      border:1px solid rgba(163,230,53,.25);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 24px 80px rgba(0,0,0,.55);
     }
 
-    .container-box {
-      max-width: 94%;
-      width: 760px;
+    header {
+      padding:28px;
+      border-bottom:1px solid rgba(163,230,53,.18);
+      background:linear-gradient(135deg,rgba(163,230,53,.12),rgba(16,185,129,.04));
     }
 
-    .neon-button {
-      transition: all 0.18s ease-in-out;
-      box-shadow: 0 0 5px #059669;
+    h1 {
+      margin:0;
+      font-size:clamp(2.4rem,8vw,5rem);
+      line-height:.9;
+      letter-spacing:-.08em;
+      text-transform:uppercase;
+      color:var(--lime);
+      text-shadow:0 0 8px rgba(163,230,53,.72),0 0 24px rgba(16,185,129,.35);
     }
 
-    .neon-button:hover:not(:disabled) {
-      box-shadow: 0 0 16px #10b981, 0 0 34px #047857;
-      transform: translateY(-1px) scale(1.01);
+    .strap {
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.5;
     }
 
-    .neon-button:disabled {
-      background-color: #4b5563;
-      color: #9ca3af;
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
+    .badges {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
     }
 
-    .chip {
-      border: 1px solid #374151;
-      background: rgba(17, 24, 39, 0.85);
-      color: #bbf7d0;
-      border-radius: 999px;
-      padding: 0.25rem 0.65rem;
-      font-size: 0.72rem;
+    .badge {
+      border:1px solid rgba(163,230,53,.22);
+      background:rgba(2,6,23,.35);
+      color:#d9f99d;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.72rem;
     }
 
-    .result-card {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.75rem;
-      align-items: center;
-      padding: 0.85rem;
-      border: 1px dashed #374151;
-      border-radius: 0.85rem;
-      background: rgba(3, 7, 18, 0.58);
+    main {
+      padding:28px;
+      display:grid;
+      gap:18px;
     }
 
-    .small-btn {
-      transition: all 0.12s ease-in-out;
-      font-size: 0.72rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 9999px;
-      font-weight: 800;
-      white-space: nowrap;
+    label {
+      display:block;
+      color:#d1d5db;
+      font-size:.78rem;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
     }
 
-    .small-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      filter: brightness(1.08);
+    input,
+    select,
+    textarea {
+      width:100%;
+      border:1px solid rgba(156,163,175,.28);
+      border-radius:14px;
+      background:rgba(2,6,23,.54);
+      color:var(--text);
+      padding:13px 14px;
+      font:inherit;
+      outline:none;
     }
 
-    .small-btn:disabled {
-      opacity: 0.55;
-      cursor: default;
-      transform: none;
+    textarea {
+      min-height:70px;
+      resize:vertical;
     }
 
-    details summary::-webkit-details-marker {
-      display: none;
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color:rgba(163,230,53,.65);
+      box-shadow:0 0 0 4px rgba(163,230,53,.11);
+    }
+
+    .hint {
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:.74rem;
+      line-height:1.45;
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+    }
+
+    @media (min-width:700px) {
+      .grid.two {
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    .actions {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    button {
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      font:inherit;
+      font-weight:800;
+      transition:transform .12s, box-shadow .12s, opacity .12s;
+    }
+
+    button:hover:not(:disabled) {
+      transform:translateY(-1px);
+    }
+
+    button:disabled {
+      cursor:not-allowed;
+      opacity:.55;
+    }
+
+    .primary {
+      flex:1 1 240px;
+      padding:16px 18px;
+      color:#111827;
+      background:linear-gradient(135deg,var(--lime),var(--green));
+      box-shadow:0 0 16px rgba(163,230,53,.25);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .secondary {
+      padding:12px 14px;
+      color:#d9f99d;
+      background:rgba(31,41,55,.9);
+      border:1px solid rgba(163,230,53,.2);
+    }
+
+    .box {
+      border:1px solid rgba(163,230,53,.18);
+      background:rgba(2,6,23,.42);
+      border-radius:18px;
+      padding:18px;
+    }
+
+    .section-title {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+      color:var(--lime);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      font-size:.86rem;
+    }
+
+    .empty {
+      text-align:center;
+      color:var(--muted);
+      font-size:.92rem;
+      padding:18px 8px;
+    }
+
+    .name-list,
+    .saved-list {
+      display:grid;
+      gap:10px;
+    }
+
+    .name-item {
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      align-items:center;
+      padding:14px;
+      border:1px dashed rgba(156,163,175,.24);
+      background:rgba(17,24,39,.58);
+      border-radius:14px;
+    }
+
+    @media (min-width:560px) {
+      .name-item {
+        grid-template-columns:1fr auto;
+      }
+    }
+
+    .name-text {
+      color:#bbf7d0;
+      font-size:clamp(1.05rem,5vw,1.45rem);
+      font-weight:900;
+      letter-spacing:-.04em;
+      text-shadow:0 0 12px rgba(16,185,129,.32);
+      overflow-wrap:anywhere;
+    }
+
+    .name-meta {
+      color:var(--muted);
+      font-size:.72rem;
+      margin-top:4px;
+    }
+
+    .mini-actions {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .pillbtn {
+      border-radius:999px;
+      padding:8px 11px;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .save {
+      background:var(--lime);
+      color:#111827;
+    }
+
+    .exclude {
+      background:var(--red);
+      color:#fff;
+    }
+
+    .copy {
+      background:#334155;
+      color:#fff;
+    }
+
+    .saved-pill {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      background:rgba(17,24,39,.75);
+      border:1px solid rgba(156,163,175,.18);
+      border-radius:12px;
+      padding:10px 12px;
+      color:#d9f99d;
+      font-size:.9rem;
+    }
+
+    .remove {
+      color:#fca5a5;
+      background:transparent;
+      font-size:1rem;
+      padding:0 4px;
+    }
+
+    details {
+      border-radius:18px;
+      border:1px solid rgba(156,163,175,.18);
+      background:rgba(17,24,39,.45);
+      overflow:hidden;
+    }
+
+    summary {
+      cursor:pointer;
+      padding:14px 18px;
+      color:#d9f99d;
+      font-weight:900;
+      text-transform:uppercase;
+      font-size:.8rem;
+      letter-spacing:.08em;
+    }
+
+    .settings {
+      padding:18px;
+      display:grid;
+      gap:14px;
+    }
+
+    .danger {
+      color:#fca5a5;
+      background:transparent;
+      padding:0;
+      font-size:.76rem;
+      text-decoration:underline;
+      text-underline-offset:4px;
+    }
+
+    .toast {
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%);
+      background:#d9f99d;
+      color:#111827;
+      font-weight:900;
+      border-radius:999px;
+      padding:10px 14px;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s, transform .18s;
+      max-width:calc(100% - 32px);
+      text-align:center;
+    }
+
+    .toast.show {
+      opacity:1;
+      transform:translateX(-50%) translateY(-4px);
+    }
+
+    .footer {
+      color:var(--muted);
+      font-size:.75rem;
+      line-height:1.5;
+      text-align:center;
     }
   </style>
 </head>
-<body class="text-white flex items-center justify-center p-4">
-  <main class="container-box bg-gray-900/90 border border-gray-700 rounded-3xl shadow-2xl overflow-hidden">
-    <section class="p-6 sm:p-8 border-b border-gray-700 bg-gray-950/45">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p class="text-xs uppercase tracking-[0.35em] text-lime-300 mb-2">Grime Alias Forge</p>
-          <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-lime-400">Grimeder</h1>
-        </div>
-        <div class="flex flex-wrap gap-2 sm:justify-end" aria-label="Feature tags">
-          <span class="chip">JSON output</span>
-          <span class="chip">Anti-repeat</span>
-          <span class="chip">Local memory</span>
-        </div>
+<body>
+  <div class="app">
+    <header>
+      <h1>Grimeder</h1>
+      <p class="strap">A no-AI grime artist name generator. No API key, no backend, no quota goblin. Just curated word banks and a tiny algorithm with cold hands.</p>
+      <div class="badges">
+        <span class="badge">Zero API</span>
+        <span class="badge">GitHub Pages ready</span>
+        <span class="badge">Local memory</span>
+        <span class="badge">Save / exclude</span>
       </div>
-      <p class="text-gray-400 mt-4 text-sm leading-relaxed">
-        Enter a real name and generate five grime, drill, and UK rap-inspired aliases. Save what slaps, exclude what clanks, and Grimeder will steer future names away from stale territory.
-      </p>
-    </section>
+    </header>
 
-    <section class="p-6 sm:p-8 grid gap-5">
-      <div class="grid gap-4 sm:grid-cols-[1.4fr_0.8fr]">
+    <main>
+      <div>
+        <label for="realName">Your real name</label>
+        <input id="realName" type="text" autocomplete="name" placeholder="e.g. John Smith" />
+        <p class="hint">Used for initials, syllables, number seeds and tiny personal flavour sparks.</p>
+      </div>
+
+      <div class="grid two">
         <div>
-          <label for="realName" class="block text-sm font-bold text-gray-300 mb-2">Your real name</label>
-          <input
-            type="text"
-            id="realName"
-            placeholder="e.g. John Smith"
-            autocomplete="name"
-            class="w-full p-3 bg-gray-800 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
-            aria-label="Real name input"
-          />
+          <label for="persona">Persona</label>
+          <select id="persona">
+            <option value="any">Any / neutral</option>
+            <option value="male">Male coded</option>
+            <option value="female">Female coded</option>
+          </select>
         </div>
 
         <div>
-          <label for="genderSelect" class="block text-sm font-bold text-gray-300 mb-2">Persona</label>
-          <select
-            id="genderSelect"
-            class="w-full p-3 bg-gray-800 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
-            aria-label="Gender persona selection"
-          >
-            <option value="Any">Any / Neutral</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+          <label for="style">Style pack</label>
+          <select id="style">
+            <option value="balanced">Balanced grime</option>
+            <option value="foundation">Foundation grime</option>
+            <option value="modern">Modern UK rap</option>
+            <option value="dark">Dark / drill-adjacent</option>
+            <option value="wild">Wildcard pirate radio</option>
           </select>
         </div>
       </div>
 
-      <details class="bg-gray-800/70 border border-gray-700 rounded-2xl p-4">
-        <summary class="cursor-pointer flex items-center justify-between gap-3">
-          <span class="font-bold text-lime-300">Settings for GitHub / API</span>
-          <span class="text-xs text-gray-500">open</span>
-        </summary>
+      <div class="actions">
+        <button id="generateBtn" class="primary">Generate 5 names</button>
+        <button id="copyAllBtn" class="secondary" disabled>Copy all</button>
+        <button id="resetRunBtn" class="secondary">Fresh run</button>
+      </div>
 
-        <div class="grid gap-4 mt-4">
+      <div class="box">
+        <div class="section-title">
+          <span>New suggestions</span>
+          <span id="generationCount">Run 0</span>
+        </div>
+        <div id="nameList" class="name-list">
+          <p class="empty">Ready to forge...</p>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="section-title">
+          <span>Your preferred names</span>
+          <button id="clearPrefsBtn" class="danger" type="button">Clear all</button>
+        </div>
+        <div id="savedNames" class="saved-list">
+          <p class="empty">No preferred names saved yet.</p>
+        </div>
+      </div>
+
+      <details>
+        <summary>Settings and blocked words</summary>
+        <div class="settings">
           <div>
-            <label for="apiKeyInput" class="block text-sm font-bold text-gray-300 mb-2">Gemini API key</label>
-            <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
-              <input
-                type="password"
-                id="apiKeyInput"
-                placeholder="Paste your key here. It is stored only in this browser."
-                class="w-full p-3 bg-gray-900 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
-                aria-label="Gemini API key input"
-              />
-              <button id="saveApiKeyBtn" class="small-btn bg-lime-500 text-gray-950">Save key</button>
-            </div>
-            <p id="apiKeyStatus" class="text-xs text-gray-500 mt-2">No key saved yet.</p>
+            <label for="blockedWords">Blocked words</label>
+            <textarea id="blockedWords" spellcheck="false"></textarea>
+            <p class="hint">Comma-separated. Use this to kill repeat offenders like Vector, Matrix, Unit, Cipher, Agent.</p>
           </div>
-
-          <div class="grid gap-4 sm:grid-cols-[1fr_0.55fr]">
-            <div>
-              <label for="bannedWordsInput" class="block text-sm font-bold text-gray-300 mb-2">Banned words</label>
-              <input
-                type="text"
-                id="bannedWordsInput"
-                class="w-full p-3 bg-gray-900 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
-                aria-label="Banned words input"
-              />
-              <p class="text-xs text-gray-500 mt-2">Comma-separated. Useful for binning repeat offenders like Vector, Matrix, Unit.</p>
-            </div>
-
-            <div>
-              <label for="varietySelect" class="block text-sm font-bold text-gray-300 mb-2">Variety level</label>
-              <select
-                id="varietySelect"
-                class="w-full p-3 bg-gray-900 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
-                aria-label="Variety level selection"
-              >
-                <option value="balanced">Balanced</option>
-                <option value="wild">Wild</option>
-                <option value="classic">Classic grime</option>
-              </select>
-            </div>
+          <div class="actions">
+            <button id="saveSettingsBtn" class="secondary">Save settings</button>
+            <button id="resetSettingsBtn" class="secondary">Reset blocked words</button>
           </div>
         </div>
       </details>
 
-      <button
-        id="generateBtn"
-        class="neon-button w-full py-4 text-lg sm:text-xl font-black bg-lime-500 hover:bg-lime-400 text-gray-950 rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center"
-      >
-        <svg id="loadingSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-950 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <span id="buttonText">Generate 5 Names</span>
-      </button>
+      <p class="footer">Everything is stored locally in this browser using localStorage. Your repo can stay public without exposing keys because there are no keys.</p>
+    </main>
+  </div>
 
-      <section class="bg-gray-950 border border-lime-700/70 rounded-2xl p-4 sm:p-5 min-h-[180px]">
-        <div class="flex items-center justify-between gap-3 mb-4">
-          <h2 class="text-lg font-black text-lime-400">New suggestions</h2>
-          <button id="copyAllBtn" class="hidden small-btn bg-gray-800 text-lime-200 border border-gray-700">Copy all</button>
-        </div>
-        <div id="nameListContainer" class="grid gap-3">
-          <p class="neon-text text-xl sm:text-2xl font-black text-center py-8">Ready to flow...</p>
-        </div>
-        <p id="errorMsg" class="text-red-400 text-sm mt-4 hidden"></p>
-      </section>
-
-      <section class="grid gap-4 lg:grid-cols-2">
-        <div class="bg-gray-800/70 border border-gray-700 rounded-2xl p-4">
-          <div class="flex justify-between items-center gap-3 mb-3">
-            <h2 class="text-sm font-black uppercase tracking-wider text-gray-300">Preferred names</h2>
-            <button id="clearSavedBtn" class="hidden text-xs text-red-300 hover:text-red-200 font-black">Clear</button>
-          </div>
-          <div id="savedNamesContainer" class="grid gap-2"></div>
-        </div>
-
-        <div class="bg-gray-800/70 border border-gray-700 rounded-2xl p-4">
-          <div class="flex justify-between items-center gap-3 mb-3">
-            <h2 class="text-sm font-black uppercase tracking-wider text-gray-300">Excluded names</h2>
-            <button id="clearDislikedBtn" class="hidden text-xs text-red-300 hover:text-red-200 font-black">Clear</button>
-          </div>
-          <div id="dislikedNamesContainer" class="grid gap-2"></div>
-        </div>
-      </section>
-
-      <footer class="text-xs text-gray-500 leading-relaxed">
-        GitHub note: this page is static, so do not commit a real API key into the file. Paste it in the settings panel instead, or use a small backend/proxy if you make Grimeder public.
-      </footer>
-    </section>
-  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const el = {
-        realName: document.getElementById('realName'),
-        genderSelect: document.getElementById('genderSelect'),
-        varietySelect: document.getElementById('varietySelect'),
-        bannedWordsInput: document.getElementById('bannedWordsInput'),
-        apiKeyInput: document.getElementById('apiKeyInput'),
-        saveApiKeyBtn: document.getElementById('saveApiKeyBtn'),
-        apiKeyStatus: document.getElementById('apiKeyStatus'),
-        generateBtn: document.getElementById('generateBtn'),
-        buttonText: document.getElementById('buttonText'),
-        loadingSpinner: document.getElementById('loadingSpinner'),
-        nameListContainer: document.getElementById('nameListContainer'),
-        savedNamesContainer: document.getElementById('savedNamesContainer'),
-        dislikedNamesContainer: document.getElementById('dislikedNamesContainer'),
-        clearSavedBtn: document.getElementById('clearSavedBtn'),
-        clearDislikedBtn: document.getElementById('clearDislikedBtn'),
-        copyAllBtn: document.getElementById('copyAllBtn'),
-        errorMsg: document.getElementById('errorMsg')
-      };
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = id => document.getElementById(id);
 
-      const CONFIG = {
-        model: 'gemini-2.5-flash',
-        maxRetries: 4,
-        maxPreferences: 20,
-        maxRecent: 40,
-        defaultBannedWords: ['Vector', 'Matrix', 'Unit', 'Agent', 'Cipher']
-      };
+      const realNameInput = $("realName");
+      const personaSelect = $("persona");
+      const styleSelect = $("style");
+      const generateBtn = $("generateBtn");
+      const copyAllBtn = $("copyAllBtn");
+      const resetRunBtn = $("resetRunBtn");
+      const nameList = $("nameList");
+      const generationCount = $("generationCount");
+      const savedNamesBox = $("savedNames");
+      const clearPrefsBtn = $("clearPrefsBtn");
+      const blockedWordsInput = $("blockedWords");
+      const saveSettingsBtn = $("saveSettingsBtn");
+      const resetSettingsBtn = $("resetSettingsBtn");
+      const toast = $("toast");
 
       const STORAGE = {
-        apiKey: 'grimeder_api_key',
-        saved: 'grimeder_saved_names_v2',
-        disliked: 'grimeder_disliked_names_v2',
-        recent: 'grimeder_recent_names_v2',
-        bannedWords: 'grimeder_banned_words_v2'
+        saved: "grimeder_noai_saved_names",
+        excluded: "grimeder_noai_excluded_names",
+        recent: "grimeder_noai_recent_names",
+        blocked: "grimeder_noai_blocked_words",
+        run: "grimeder_noai_run_count"
       };
 
-      const FOUNDATION_GRIME_INFLUENCES = [
-        'Wiley', 'Dizzee Rascal', 'Kano', 'Ghetts', 'D Double E', 'Skepta', 'Jme',
-        'Lethal Bizzle', 'Tinchy Stryder', 'Jammer', 'Flowdan', 'P Money', 'Devlin',
-        'Chip', 'Big Narstie', 'Frisco', 'President T', 'Footsie', 'Riko Dan',
-        'Lady Leshurr', 'Lady Sovereign', 'Novelist', 'Manga Saint Hilare', 'Ruff Sqwad',
-        'Roll Deep', 'Boy Better Know', 'Nasty Crew'
+      const DEFAULT_BLOCKED_WORDS = [
+        "vector",
+        "matrix",
+        "unit",
+        "cipher",
+        "agent",
+        "trooper"
       ];
 
-      const MODERN_UK_RAP_INFLUENCES = [
-        'Stormzy', 'Dave', 'Little Simz', 'Central Cee', 'Loyle Carner', 'AJ Tracey',
-        'Knucks', 'Pa Salieu', 'Headie One', 'K-Trap', 'Unknown T', 'Meekz', 'Nines',
-        'Aitch', 'Jim Legxacy', 'Nemzzz', 'J Hus', 'Fredo', 'M Huncho', 'Digga D'
-      ];
+      const BANKS = {
+        titlesAny: [
+          "Ace",
+          "Ghost",
+          "Kid",
+          "Boss",
+          "Capo",
+          "Murk",
+          "Saint",
+          "Rogue",
+          "Prez",
+          "Signal",
+          "Rebel",
+          "Major",
+          "Rapid",
+          "Hawk",
+          "Vex",
+          "Scout"
+        ],
 
-      const EMERGING_UK_INFLUENCES = [
-        'Len', 'Lancey Foux', 'Fimiguerrero', 'Pozer', 'Mazza L20', 'Ceebo', 'Caldo',
-        'Reuben Aziz', 'Cristale', 'Blanco', 'BXKS', 'KwolleM', 'Sainté', 'SamRecks'
-      ];
+        titlesMale: [
+          "Lord",
+          "King",
+          "Don",
+          "General",
+          "Baron",
+          "Mister",
+          "Sir",
+          "Duke",
+          "Major",
+          "Captain",
+          "Prince",
+          "Governor"
+        ],
 
-      const TITLE_WORDS = [
-        'Capo', 'Don', 'General', 'Major', 'Lord', 'Lady', 'Queen', 'Baron', 'Saint',
-        'Ghost', 'Kid', 'Boss', 'Murk', 'Ace', 'Prez', 'Duke', 'Sir', 'Madam', 'Prince',
-        'Commander', 'Sarge', 'Rascal', 'Skipper', 'Villain'
-      ];
+        titlesFemale: [
+          "Lady",
+          "Queen",
+          "Empress",
+          "Duchess",
+          "Madam",
+          "Miss",
+          "Princess",
+          "Countess",
+          "Maestra",
+          "Baroness",
+          "Saint",
+          "Dame"
+        ],
 
-      const TEXTURE_WORDS = [
-        'Static', 'Frost', 'Gravel', 'Diesel', 'Noir', 'Ash', 'Voltage', 'Sleet',
-        'Concrete', 'Rust', 'Bassline', 'Night', 'Signal', 'Pressure', 'Grit', 'Tar',
-        'Radar', 'Wraith', 'Siren', 'Motive', 'Packet', 'Switch', 'Mercury', 'Iron',
-        'Quartz', 'Rumble', 'Hollow', 'Brass', 'Phantom', 'Kettle', 'Wire', 'Latch'
-      ];
+        textures: [
+          "Static",
+          "Chrome",
+          "Frost",
+          "Gravel",
+          "Diesel",
+          "Noir",
+          "Ash",
+          "Voltage",
+          "Sleet",
+          "Concrete",
+          "Rust",
+          "Bassline",
+          "Night",
+          "Signal",
+          "Smoke",
+          "Velvet",
+          "Pressure",
+          "Glitch",
+          "Hollow",
+          "Neon",
+          "Iron",
+          "Packet",
+          "Wraith",
+          "Echo",
+          "Tempo",
+          "Shiver",
+          "Quartz",
+          "Brass",
+          "Cinder",
+          "Rumble"
+        ],
 
-      const UK_PLACE_FLAVOUR = [
-        'E3', 'E8', 'E14', 'N15', 'SE15', 'Bow', 'Peckham', 'Tottenham', 'Brixton',
-        'Newham', 'Hackney', 'Lewisham', 'Croydon', 'Woolwich', 'Acton', 'Ilford',
-        'Walthamstow', 'Camden', 'Stratford', 'Deptford', 'Norwood', 'Plaistow'
-      ];
+        ukFlavour: [
+          "Bow",
+          "Peckham",
+          "Tottenham",
+          "Brixton",
+          "Newham",
+          "Hackney",
+          "Lewisham",
+          "Croydon",
+          "Woolwich",
+          "Stratford",
+          "Plaistow",
+          "Acton",
+          "Hounslow",
+          "Mitcham",
+          "Deptford",
+          "Clapton",
+          "Ilford",
+          "Barking",
+          "Camden",
+          "Kilburn",
+          "Twickenham",
+          "Walthamstow",
+          "Bethnal Green",
+          "Limehouse",
+          "Whitechapel",
+          "Stockwell",
+          "Tooting",
+          "Harlesden",
+          "Shepherds Bush",
+          "Ladbroke Grove",
+          "Finsbury Park",
+          "Wood Green",
+          "Enfield",
+          "Leyton",
+          "Forest Gate",
+          "Poplar",
+          "Canning Town",
+          "Dalston",
+          "Stoke Newington",
+          "Elephant",
+          "Walworth",
+          "Catford",
+          "Sydenham",
+          "Norwood",
+          "Kingston",
+          "Southall",
+          "Ealing",
+          "Brentford",
+          "Richmond"
+        ],
 
-      const NAME_PATTERNS = [
-        'Initial plus sharp noun, for example J Static',
-        'Title plus name syllable, for example Don Toba',
-        'Place or postcode plus abstract noun, for example E3 Voltage',
-        'Single-word alias, for example Frostline',
-        'Two-word contrast, for example Velvet Murk',
-        'Number suffix, for example Kettle 45',
-        'Royal title with rough texture, for example Baron Gravel',
-        'Mutated surname fragment, for example Tobz or Smitto',
-        'Sound-system style name, for example Bassline Saint',
-        'Pirate-radio callsign, for example N15 Siren'
-      ];
+        endings: [
+          "line",
+          "storm",
+          "mode",
+          "pressure",
+          "talk",
+          "season",
+          "signal",
+          "reload",
+          "runner",
+          "sauce",
+          "shell",
+          "pulse",
+          "weight",
+          "style",
+          "tempo",
+          "charge",
+          "matter",
+          "logic",
+          "shift",
+          "dust",
+          "stack"
+        ],
 
-      const VARIETY_GUIDANCE = {
-        balanced: 'Balance authenticity, punchiness, and variety. Names should be usable, not just weird.',
-        wild: 'Push the names further into odd, memorable, high-contrast territory. Keep them pronounceable.',
-        classic: 'Lean into early grime, pirate radio, road rap, clashes, reloads, and sharp MC aliases.'
+        foundation: [
+          "Eski",
+          "Reload",
+          "Pirate",
+          "Rinse",
+          "Shella",
+          "Spitter",
+          "Dubplate",
+          "White Label",
+          "Sidewinder",
+          "Eskimo",
+          "Garage",
+          "Mic",
+          "Clash",
+          "Wheelup",
+          "Meridian",
+          "Roller"
+        ],
+
+        modern: [
+          "Lucid",
+          "Velour",
+          "Minimal",
+          "Atlas",
+          "Navy",
+          "Softstep",
+          "Northside",
+          "Fineprint",
+          "Clean Cut",
+          "Lowkey",
+          "Orbit",
+          "Muse",
+          "Platinum",
+          "Archive",
+          "Blue Note",
+          "Afterhours"
+        ],
+
+        dark: [
+          "Grit",
+          "Grave",
+          "Fang",
+          "Hooded",
+          "Blade",
+          "Tarmac",
+          "Sirens",
+          "Trapdoor",
+          "Sable",
+          "Shutter",
+          "Crow",
+          "Nightbus",
+          "Blackout",
+          "Muzzle",
+          "Coldcase",
+          "Rook"
+        ],
+
+        wild: [
+          "Biscuit",
+          "Kebab",
+          "Goblin",
+          "Moped",
+          "Binlid",
+          "Teapot",
+          "Pigeon",
+          "Badger",
+          "Lollipop",
+          "Wotsit",
+          "Crumpet",
+          "Boiler",
+          "Barcode",
+          "Spreadsheet",
+          "Turnstile",
+          "Crisp"
+        ],
+
+        suffixes: [
+          "MC",
+          "MCR",
+          "G",
+          "T",
+          "X",
+          "2x",
+          "3000",
+          "97",
+          "45",
+          "404",
+          "FM"
+        ]
+      };
+
+      const STYLE_CONFIG = {
+        balanced: {
+          banks: ["textures", "foundation", "modern", "ukFlavour"],
+          templates: [
+            "titleName",
+            "initialTexture",
+            "placeTexture",
+            "singleBlend",
+            "textureEnding",
+            "nameSuffix",
+            "twoTexture"
+          ]
+        },
+
+        foundation: {
+          banks: ["foundation", "textures", "ukFlavour"],
+          templates: [
+            "titleName",
+            "initialTexture",
+            "placeTexture",
+            "textureEnding",
+            "nameSuffix",
+            "crewStyle"
+          ]
+        },
+
+        modern: {
+          banks: ["modern", "textures", "ukFlavour"],
+          templates: [
+            "singleBlend",
+            "nameSuffix",
+            "twoTexture",
+            "titleName",
+            "textureEnding"
+          ]
+        },
+
+        dark: {
+          banks: ["dark", "textures", "ukFlavour"],
+          templates: [
+            "placeTexture",
+            "initialTexture",
+            "textureEnding",
+            "twoTexture",
+            "nameSuffix"
+          ]
+        },
+
+        wild: {
+          banks: ["wild", "foundation", "textures", "ukFlavour"],
+          templates: [
+            "titleName",
+            "placeTexture",
+            "singleBlend",
+            "twoTexture",
+            "crewStyle",
+            "nameSuffix"
+          ]
+        }
       };
 
       let currentNames = [];
 
-      const getJson = (key, fallback) => {
+      function getJSON(key, fallback) {
         try {
-          const value = localStorage.getItem(key);
-          return value ? JSON.parse(value) : fallback;
-        } catch (error) {
-          console.warn(`Could not parse ${key}`, error);
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch {
           return fallback;
         }
-      };
+      }
 
-      const setJson = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+      function setJSON(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
 
-      const normalise = value => String(value || '').trim();
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+      }
 
-      const uniqueCaseInsensitive = names => {
-        const seen = new Set();
-        return names.filter(name => {
-          const key = name.toLowerCase();
-          if (!name || seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
-      };
+      function normalize(str) {
+        return String(str || "").trim().replace(/\s+/g, " ");
+      }
 
-      const sample = (array, count) => {
-        const shuffled = [...array].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, count);
-      };
+      function titleCase(str) {
+        return normalize(str)
+          .split(" ")
+          .filter(Boolean)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" ");
+      }
 
-      const getSavedNames = () => getJson(STORAGE.saved, []);
-      const getDislikedNames = () => getJson(STORAGE.disliked, []);
-      const getRecentNames = () => getJson(STORAGE.recent, []);
-
-      const getBannedWords = () => {
-        return el.bannedWordsInput.value
-          .split(',')
-          .map(word => word.trim())
-          .filter(Boolean);
-      };
-
-      const saveName = name => {
-        const saved = uniqueCaseInsensitive([name, ...getSavedNames()]).slice(0, CONFIG.maxPreferences);
-        const disliked = getDislikedNames().filter(item => item.toLowerCase() !== name.toLowerCase());
-        setJson(STORAGE.saved, saved);
-        setJson(STORAGE.disliked, disliked);
-        renderMemoryLists();
-        renderGeneratedNames(currentNames);
-      };
-
-      const dislikeName = name => {
-        const disliked = uniqueCaseInsensitive([name, ...getDislikedNames()]).slice(0, CONFIG.maxPreferences);
-        const saved = getSavedNames().filter(item => item.toLowerCase() !== name.toLowerCase());
-        setJson(STORAGE.disliked, disliked);
-        setJson(STORAGE.saved, saved);
-        renderMemoryLists();
-        renderGeneratedNames(currentNames);
-      };
-
-      const removeName = (key, name) => {
-        setJson(key, getJson(key, []).filter(item => item.toLowerCase() !== name.toLowerCase()));
-        renderMemoryLists();
-        renderGeneratedNames(currentNames);
-      };
-
-      const rememberRecent = names => {
-        const recent = uniqueCaseInsensitive([...names, ...getRecentNames()]).slice(0, CONFIG.maxRecent);
-        setJson(STORAGE.recent, recent);
-      };
-
-      const tokenise = name => {
-        return name
-          .toLowerCase()
-          .replace(/[^a-z0-9\s]/g, ' ')
-          .split(/\s+/)
-          .filter(token => token.length >= 3);
-      };
-
-      const hasBlockedContent = (name, blockedItems) => {
-        const lower = name.toLowerCase();
-        return blockedItems.some(item => lower.includes(item.toLowerCase()));
-      };
-
-      const getApiKey = () => localStorage.getItem(STORAGE.apiKey) || '';
-
-      const updateApiKeyStatus = () => {
-        const hasKey = Boolean(getApiKey());
-        el.apiKeyStatus.textContent = hasKey
-          ? 'API key saved in this browser. It is not written into the HTML file.'
-          : 'No key saved yet.';
-        el.apiKeyStatus.className = hasKey ? 'text-xs text-lime-300 mt-2' : 'text-xs text-gray-500 mt-2';
-      };
-
-      const saveApiKey = () => {
-        const key = normalise(el.apiKeyInput.value);
-        if (!key) {
-          localStorage.removeItem(STORAGE.apiKey);
-        } else {
-          localStorage.setItem(STORAGE.apiKey, key);
-          el.apiKeyInput.value = '';
-        }
-        updateApiKeyStatus();
-      };
-
-      const setLoading = isLoading => {
-        el.generateBtn.disabled = isLoading;
-        el.realName.disabled = isLoading;
-        el.genderSelect.disabled = isLoading;
-        el.loadingSpinner.classList.toggle('hidden', !isLoading);
-        el.buttonText.textContent = isLoading ? 'Forging identities...' : 'Generate 5 Names';
-        if (isLoading) {
-          el.errorMsg.classList.add('hidden');
-          el.copyAllBtn.classList.add('hidden');
-          el.nameListContainer.replaceChildren();
-          const loading = document.createElement('p');
-          loading.className = 'neon-text text-xl sm:text-2xl font-black text-center py-8';
-          loading.textContent = 'Tuning pirate radio static...';
-          el.nameListContainer.appendChild(loading);
-        }
-      };
-
-      const showError = message => {
-        el.errorMsg.textContent = message;
-        el.errorMsg.classList.remove('hidden');
-      };
-
-      const buildInfluencePack = () => ({
-        foundation: sample(FOUNDATION_GRIME_INFLUENCES, 5),
-        modern: sample(MODERN_UK_RAP_INFLUENCES, 4),
-        emerging: sample(EMERGING_UK_INFLUENCES, 3),
-        titles: sample(TITLE_WORDS, 8),
-        textures: sample(TEXTURE_WORDS, 10),
-        places: sample(UK_PLACE_FLAVOUR, 8),
-        patterns: sample(NAME_PATTERNS, 6)
-      });
-
-      const buildSystemPrompt = ({ gender, variety, bannedWords, savedNames, dislikedNames, recentNames }) => {
-        const pack = buildInfluencePack();
-        const dislikedTokens = uniqueCaseInsensitive(dislikedNames.flatMap(tokenise)).slice(0, 30);
-        const genderGuidance = gender === 'Any'
-          ? 'Use neutral or any-gender personas. Avoid making gendered titles mandatory.'
-          : `The persona should reflect a ${gender} identity where it feels natural, without becoming repetitive.`;
-
-        return `You create authentic, funny-but-credible grime, drill, and UK rap artist aliases.
-
-Return strict JSON only in this exact shape: {"names":["Name One","Name Two","Name Three","Name Four","Name Five"]}
-
-Rules:
-- Generate exactly 5 names.
-- Each name must be 1 to 3 words.
-- Each name must be pronounceable and suitable for a mixtape cover, radio set, clash flyer, or festival billing.
-- Make all 5 names structurally different from each other.
-- Avoid parody, cringe fantasy names, and direct copies of real artists.
-- Do not use real artist names or obvious close variants.
-- Use fragments, initials, syllables, sound, rhythm, postcode flavour, and UK MC naming conventions.
-- ${genderGuidance}
-- Variety mode: ${VARIETY_GUIDANCE[variety] || VARIETY_GUIDANCE.balanced}
-
-Avoid these banned words or close variations: ${bannedWords.join(', ') || 'none'}.
-Avoid names similar to disliked names: ${dislikedNames.join(', ') || 'none'}.
-Avoid overusing these disliked tokens: ${dislikedTokens.join(', ') || 'none'}.
-Avoid repeating recent names: ${recentNames.join(', ') || 'none'}.
-
-Positive influence from liked names: ${savedNames.join(', ') || 'none'}.
-
-Rotating style ingredients, for influence only:
-- Foundation grime references: ${pack.foundation.join(', ')}
-- Modern UK rap references: ${pack.modern.join(', ')}
-- Emerging UK references: ${pack.emerging.join(', ')}
-- Title words: ${pack.titles.join(', ')}
-- Texture words: ${pack.textures.join(', ')}
-- Place/postcode flavour: ${pack.places.join(', ')}
-- Naming patterns to mix: ${pack.patterns.join(' | ')}
-
-Important: names should feel culturally grounded, punchy, and fresh. High variety beats safe repetition.`;
-      };
-
-      const parseNames = text => {
-        const clean = String(text || '')
-          .trim()
-          .replace(/^```json/i, '')
-          .replace(/^```/i, '')
-          .replace(/```$/i, '')
+      function cleanName(name) {
+        return normalize(name)
+          .replace(/[^\w\s'-]/g, "")
+          .replace(/\bMc\b/g, "MC")
+          .replace(/\bFm\b/g, "FM")
           .trim();
+      }
 
-        try {
-          const parsed = JSON.parse(clean);
-          if (Array.isArray(parsed)) return parsed;
-          if (Array.isArray(parsed.names)) return parsed.names;
-        } catch (error) {
-          console.warn('Structured parse failed, falling back to line parsing.', error);
+      function hashString(input) {
+        let h = 2166136261;
+
+        for (let i = 0; i < input.length; i++) {
+          h ^= input.charCodeAt(i);
+          h = Math.imul(h, 16777619);
         }
 
-        return clean
-          .split('\n')
-          .map(line => line.replace(/^[-*\d.)\s]+/, '').trim())
+        return h >>> 0;
+      }
+
+      function mulberry32(seed) {
+        return function() {
+          let t = seed += 0x6D2B79F5;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function pick(arr, rng) {
+        return arr[Math.floor(rng() * arr.length)];
+      }
+
+      function maybe(percent, rng) {
+        return rng() < percent;
+      }
+
+      function uniquePush(arr, item, max) {
+        const clean = cleanName(item);
+
+        if (!clean) {
+          return arr;
+        }
+
+        const exists = arr.some(x => x.toLowerCase() === clean.toLowerCase());
+
+        if (!exists) {
+          arr.unshift(clean);
+        }
+
+        return arr.slice(0, max);
+      }
+
+      function getBlockedWords() {
+        const stored = getJSON(STORAGE.blocked, null);
+        return Array.isArray(stored) ? stored : DEFAULT_BLOCKED_WORDS;
+      }
+
+      function renderBlockedWords() {
+        blockedWordsInput.value = getBlockedWords().join(", ");
+      }
+
+      function setBlockedWordsFromTextarea() {
+        const words = blockedWordsInput.value
+          .split(",")
+          .map(w => w.trim().toLowerCase())
           .filter(Boolean);
-      };
 
-      const cleanNames = (names, bannedWords, dislikedNames, recentNames) => {
-        const blocked = [...bannedWords, ...dislikedNames];
-        const recentLower = new Set(recentNames.map(name => name.toLowerCase()));
+        setJSON(STORAGE.blocked, [...new Set(words)]);
+      }
 
-        return uniqueCaseInsensitive(names)
-          .map(name => String(name).replace(/^['"\s]+|['"\s]+$/g, '').trim())
-          .filter(name => name.length >= 2)
-          .filter(name => name.length <= 36)
-          .filter(name => !hasBlockedContent(name, blocked))
-          .filter(name => !recentLower.has(name.toLowerCase()))
-          .slice(0, 5);
-      };
+      function extractNameParts(realName) {
+        const parts = titleCase(realName).split(" ").filter(Boolean);
+        const first = parts[0] || "Mystery";
+        const last = parts[parts.length - 1] || first;
+        const initials = parts.map(p => p[0]).join("").toUpperCase() || "MC";
+        const syllables = [];
 
-      const requestNames = async ({ realName, gender, variety }) => {
-        const apiKey = getApiKey();
-        if (!apiKey) {
-          throw new Error('Paste and save your Gemini API key in Settings first. For GitHub, do not commit the key into the file.');
+        for (const part of parts) {
+          const letters = part.replace(/[^a-z]/gi, "");
+
+          if (letters.length >= 2) {
+            syllables.push(letters.slice(0, 3));
+          }
+
+          if (letters.length >= 4) {
+            syllables.push(letters.slice(-3));
+          }
+
+          if (letters.length >= 5) {
+            syllables.push(letters.slice(1, 4));
+          }
         }
 
-        const bannedWords = getBannedWords();
-        const savedNames = getSavedNames();
-        const dislikedNames = getDislikedNames();
-        const recentNames = getRecentNames();
-        const systemPrompt = buildSystemPrompt({ gender, variety, bannedWords, savedNames, dislikedNames, recentNames });
+        return {
+          parts,
+          first,
+          last,
+          initials,
+          syllables: [...new Set(syllables.map(titleCase))]
+        };
+      }
 
-        const payload = {
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                {
-                  text: `Generate grime artist aliases for this real name: ${realName}. Use the real name as inspiration, but do not expose the full real name unless it naturally works as a short alias.`
-                }
-              ]
-            }
-          ],
-          systemInstruction: {
-            parts: [{ text: systemPrompt }]
-          },
-          generationConfig: {
-            temperature: variety === 'wild' ? 1.25 : 0.95,
-            topP: 0.95,
-            responseMimeType: 'application/json',
-            responseSchema: {
-              type: 'OBJECT',
-              properties: {
-                names: {
-                  type: 'ARRAY',
-                  minItems: 5,
-                  maxItems: 5,
-                  items: { type: 'STRING' }
-                }
-              },
-              required: ['names']
-            }
-          }
+      function personaTitles(persona) {
+        if (persona === "male") {
+          return [...BANKS.titlesMale, ...BANKS.titlesAny];
+        }
+
+        if (persona === "female") {
+          return [...BANKS.titlesFemale, ...BANKS.titlesAny];
+        }
+
+        return [...BANKS.titlesAny, "Lord", "Lady", "Don", "Queen"];
+      }
+
+      function styleWords(style, rng) {
+        const config = STYLE_CONFIG[style] || STYLE_CONFIG.balanced;
+        return BANKS[pick(config.banks, rng)];
+      }
+
+      function makeNumber(realName, rng) {
+        const base = hashString(realName);
+
+        return pick([
+          String((base % 89) + 10),
+          String((base % 900) + 100),
+          String(Math.floor(rng() * 90) + 10),
+          pick(["45", "97", "404", "101", "108", "247", "360"], rng)
+        ], rng);
+      }
+
+      function buildCandidate(context, rng) {
+        const { realName, persona, style, parts } = context;
+        const config = STYLE_CONFIG[style] || STYLE_CONFIG.balanced;
+        const template = pick(config.templates, rng);
+        const title = pick(personaTitles(persona), rng);
+        const texture = pick(styleWords(style, rng), rng);
+        const texture2 = pick(BANKS.textures, rng);
+        const place = pick(BANKS.ukFlavour, rng);
+        const ending = pick(BANKS.endings, rng);
+        const suffix = pick(BANKS.suffixes, rng);
+        const syllable = parts.syllables.length ? pick(parts.syllables, rng) : parts.initials;
+        const initial = maybe(.72, rng) ? parts.initials : parts.first.charAt(0).toUpperCase();
+        const num = makeNumber(realName, rng);
+
+        const templates = {
+          titleName: () => `${title} ${syllable}`,
+          initialTexture: () => `${initial} ${texture}`,
+          placeTexture: () => `${place} ${texture}`,
+          singleBlend: () => `${syllable}${ending}`,
+          textureEnding: () => `${texture} ${ending}`,
+          nameSuffix: () => `${syllable} ${suffix}`,
+          twoTexture: () => `${texture} ${texture2}`,
+          crewStyle: () => `${title} ${texture} ${maybe(.45, rng) ? num : "MC"}`
         };
 
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.model}:generateContent`;
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey
-          },
-          body: JSON.stringify(payload)
-        };
+        let name = (templates[template] || templates.titleName)();
 
-        const response = await exponentialBackoffFetch(endpoint, options);
-        const result = await response.json();
-        const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        const parsed = parseNames(text);
-        const cleaned = cleanNames(parsed, bannedWords, dislikedNames, recentNames);
-
-        if (cleaned.length === 0) {
-          throw new Error('The model replied, but every name was filtered out. Try removing a few banned words or clearing recent/excluded names.');
+        if (maybe(.18, rng) && !/\d/.test(name)) {
+          name = `${name} ${num}`;
         }
 
-        return cleaned;
-      };
+        return cleanName(titleCase(name));
+      }
 
-      const exponentialBackoffFetch = async (url, options, retry = 0) => {
-        const response = await fetch(url, options);
+      function isBlocked(name) {
+        const hay = name.toLowerCase();
 
-        if ((response.status === 429 || response.status >= 500) && retry < CONFIG.maxRetries) {
-          const delay = Math.pow(2, retry) * 850 + Math.floor(Math.random() * 250);
-          await new Promise(resolve => setTimeout(resolve, delay));
-          return exponentialBackoffFetch(url, options, retry + 1);
-        }
+        return getBlockedWords().some(word => {
+          return word && hay.includes(word.toLowerCase());
+        });
+      }
 
-        if (!response.ok) {
-          let details = '';
-          try {
-            const errorData = await response.json();
-            details = errorData.error?.message ? ` ${errorData.error.message}` : '';
-          } catch (_) {
-            details = ` ${response.statusText}`;
+      function isTooSimilar(name, list) {
+        const lower = name.toLowerCase();
+        const tokens = lower.split(/\s+/).filter(Boolean);
+
+        return list.some(existing => {
+          const ex = existing.toLowerCase();
+
+          if (ex === lower) {
+            return true;
           }
-          throw new Error(`API error ${response.status}.${details}`);
-        }
 
-        return response;
-      };
+          const exTokens = ex.split(/\s+/).filter(Boolean);
 
-      const makeMemoryRow = (name, actionLabel, onAction) => {
-        const row = document.createElement('div');
-        row.className = 'flex justify-between items-center gap-3 p-2 rounded-xl bg-gray-950/70 border border-gray-700';
-
-        const text = document.createElement('span');
-        text.className = 'text-sm text-lime-100';
-        text.textContent = name;
-
-        const button = document.createElement('button');
-        button.className = 'small-btn bg-gray-800 text-gray-300 border border-gray-700';
-        button.textContent = actionLabel;
-        button.addEventListener('click', onAction);
-
-        row.append(text, button);
-        return row;
-      };
-
-      const renderMemoryLists = () => {
-        const savedNames = getSavedNames();
-        const dislikedNames = getDislikedNames();
-
-        el.savedNamesContainer.replaceChildren();
-        el.dislikedNamesContainer.replaceChildren();
-
-        if (savedNames.length === 0) {
-          const empty = document.createElement('p');
-          empty.className = 'text-sm text-gray-500 italic';
-          empty.textContent = 'No preferred names saved yet.';
-          el.savedNamesContainer.appendChild(empty);
-        } else {
-          savedNames.forEach(name => {
-            el.savedNamesContainer.appendChild(makeMemoryRow(name, 'Remove', () => removeName(STORAGE.saved, name)));
+          return tokens.some(t => {
+            return t.length > 3 && exTokens.includes(t);
           });
-        }
+        });
+      }
 
-        if (dislikedNames.length === 0) {
-          const empty = document.createElement('p');
-          empty.className = 'text-sm text-gray-500 italic';
-          empty.textContent = 'No excluded names yet.';
-          el.dislikedNamesContainer.appendChild(empty);
-        } else {
-          dislikedNames.forEach(name => {
-            el.dislikedNamesContainer.appendChild(makeMemoryRow(name, 'Allow', () => removeName(STORAGE.disliked, name)));
-          });
-        }
+      function generateNames() {
+        const realName = normalize(realNameInput.value);
 
-        el.clearSavedBtn.classList.toggle('hidden', savedNames.length === 0);
-        el.clearDislikedBtn.classList.toggle('hidden', dislikedNames.length === 0);
-      };
+        if (realName.length < 2) {
+          nameList.innerHTML = "";
 
-      const renderGeneratedNames = names => {
-        currentNames = names;
-        el.nameListContainer.replaceChildren();
-        el.copyAllBtn.classList.toggle('hidden', names.length === 0);
+          const p = document.createElement("p");
+          p.className = "empty";
+          p.textContent = "Give me at least two characters. Even grime aliases need a crumb.";
 
-        if (names.length === 0) {
-          const empty = document.createElement('p');
-          empty.className = 'text-center text-gray-500 py-8';
-          empty.textContent = 'No names generated yet.';
-          el.nameListContainer.appendChild(empty);
+          nameList.appendChild(p);
+          copyAllBtn.disabled = true;
           return;
         }
 
-        const savedLower = new Set(getSavedNames().map(name => name.toLowerCase()));
-        const dislikedLower = new Set(getDislikedNames().map(name => name.toLowerCase()));
+        const persona = personaSelect.value;
+        const style = styleSelect.value;
+        const run = Number(localStorage.getItem(STORAGE.run) || "0") + 1;
+
+        localStorage.setItem(STORAGE.run, String(run));
+        generationCount.textContent = `Run ${run}`;
+
+        const seed = hashString(`${realName}|${persona}|${style}|${run}|${Date.now()}`);
+        const rng = mulberry32(seed);
+        const excluded = getJSON(STORAGE.excluded, []);
+        const recent = getJSON(STORAGE.recent, []);
+        const parts = extractNameParts(realName);
+        const context = { realName, persona, style, parts };
+        const results = [];
+
+        let attempts = 0;
+
+        while (results.length < 5 && attempts < 300) {
+          attempts++;
+
+          const candidate = buildCandidate(context, rng);
+
+          if (!candidate) {
+            continue;
+          }
+
+          if (isBlocked(candidate)) {
+            continue;
+          }
+
+          if (isTooSimilar(candidate, [...results, ...excluded, ...recent])) {
+            continue;
+          }
+
+          results.push(candidate);
+        }
+
+        while (results.length < 5 && attempts < 420) {
+          attempts++;
+
+          const fallback = cleanName(`${parts.initials} ${pick(BANKS.textures, rng)} ${makeNumber(realName, rng)}`);
+
+          if (!isBlocked(fallback) && !isTooSimilar(fallback, results)) {
+            results.push(fallback);
+          }
+        }
+
+        currentNames = results;
+        setJSON(STORAGE.recent, [...results, ...recent].slice(0, 30));
+        renderNames(results);
+        copyAllBtn.disabled = results.length === 0;
+      }
+
+      function renderNames(names) {
+        nameList.innerHTML = "";
+
+        if (!names.length) {
+          const p = document.createElement("p");
+          p.className = "empty";
+          p.textContent = "Nothing made it through the filters. Loosen the blocked words and try again.";
+
+          nameList.appendChild(p);
+          return;
+        }
 
         names.forEach((name, index) => {
-          const card = document.createElement('div');
-          card.className = 'result-card';
+          const item = document.createElement("div");
+          item.className = "name-item";
 
-          const title = document.createElement('div');
-          title.className = 'neon-text text-lg sm:text-xl font-black';
-          title.textContent = `${index + 1}. ${name}`;
+          const left = document.createElement("div");
 
-          const actions = document.createElement('div');
-          actions.className = 'flex gap-2 flex-wrap justify-end';
+          const text = document.createElement("div");
+          text.className = "name-text";
+          text.textContent = `${index + 1}. ${name}`;
 
-          const exclude = document.createElement('button');
-          exclude.className = 'small-btn bg-red-700 text-white';
-          exclude.textContent = dislikedLower.has(name.toLowerCase()) ? 'Excluded' : 'Exclude';
-          exclude.disabled = dislikedLower.has(name.toLowerCase()) || savedLower.has(name.toLowerCase());
-          exclude.addEventListener('click', () => dislikeName(name));
+          const meta = document.createElement("div");
+          meta.className = "name-meta";
+          meta.textContent = `${styleSelect.options[styleSelect.selectedIndex].text} · ${personaSelect.options[personaSelect.selectedIndex].text}`;
 
-          const save = document.createElement('button');
-          save.className = 'small-btn bg-lime-500 text-gray-950';
-          save.textContent = savedLower.has(name.toLowerCase()) ? 'Saved' : 'Save';
-          save.disabled = savedLower.has(name.toLowerCase()) || dislikedLower.has(name.toLowerCase());
-          save.addEventListener('click', () => saveName(name));
+          left.appendChild(text);
+          left.appendChild(meta);
 
-          actions.append(exclude, save);
-          card.append(title, actions);
-          el.nameListContainer.appendChild(card);
+          const actions = document.createElement("div");
+          actions.className = "mini-actions";
+
+          const copy = makeButton("Copy", "pillbtn copy", () => copyText(name));
+
+          const exclude = makeButton("Exclude", "pillbtn exclude", () => {
+            addExcluded(name);
+            item.remove();
+            showToast(`Excluded ${name}`);
+          });
+
+          const save = makeButton("Save", "pillbtn save", () => {
+            addSaved(name);
+            save.textContent = "Saved";
+            save.disabled = true;
+            exclude.disabled = true;
+            showToast(`Saved ${name}`);
+          });
+
+          actions.append(copy, exclude, save);
+          item.append(left, actions);
+          nameList.appendChild(item);
         });
-      };
+      }
 
-      const generateNames = async () => {
-        const realName = normalise(el.realName.value);
-        if (realName.length < 2) {
-          showError('Please enter a name with at least two characters.');
+      function makeButton(text, className, onClick) {
+        const btn = document.createElement("button");
+
+        btn.type = "button";
+        btn.className = className;
+        btn.textContent = text;
+        btn.addEventListener("click", onClick);
+
+        return btn;
+      }
+
+      function addSaved(name) {
+        const saved = getJSON(STORAGE.saved, []);
+        const excluded = getJSON(STORAGE.excluded, []);
+
+        setJSON(STORAGE.saved, uniquePush(saved, name, 20));
+        setJSON(STORAGE.excluded, excluded.filter(n => n.toLowerCase() !== name.toLowerCase()));
+
+        renderSaved();
+      }
+
+      function addExcluded(name) {
+        const excluded = getJSON(STORAGE.excluded, []);
+        const saved = getJSON(STORAGE.saved, []);
+
+        setJSON(STORAGE.excluded, uniquePush(excluded, name, 40));
+        setJSON(STORAGE.saved, saved.filter(n => n.toLowerCase() !== name.toLowerCase()));
+
+        renderSaved();
+      }
+
+      function removeSaved(name) {
+        const saved = getJSON(STORAGE.saved, []);
+
+        setJSON(STORAGE.saved, saved.filter(n => n.toLowerCase() !== name.toLowerCase()));
+
+        renderSaved();
+      }
+
+      function renderSaved() {
+        const saved = getJSON(STORAGE.saved, []);
+
+        savedNamesBox.innerHTML = "";
+
+        if (!saved.length) {
+          const p = document.createElement("p");
+          p.className = "empty";
+          p.textContent = "No preferred names saved yet.";
+
+          savedNamesBox.appendChild(p);
           return;
         }
 
-        setLoading(true);
-        try {
-          const names = await requestNames({
-            realName,
-            gender: el.genderSelect.value,
-            variety: el.varietySelect.value
-          });
-          rememberRecent(names);
-          renderGeneratedNames(names);
-        } catch (error) {
-          console.error('Grimeder generation error:', error);
-          el.nameListContainer.replaceChildren();
-          const offline = document.createElement('p');
-          offline.className = 'text-red-400 text-xl font-black text-center py-8';
-          offline.textContent = 'System offline';
-          el.nameListContainer.appendChild(offline);
-          showError(error.message || 'Failed to forge identities. Check the console for details.');
-        } finally {
-          setLoading(false);
-        }
-      };
+        saved.forEach(name => {
+          const pill = document.createElement("div");
+          pill.className = "saved-pill";
 
-      const copyAllNames = async () => {
-        if (!currentNames.length) return;
-        try {
-          await navigator.clipboard.writeText(currentNames.join('\n'));
-          el.copyAllBtn.textContent = 'Copied';
-          setTimeout(() => { el.copyAllBtn.textContent = 'Copy all'; }, 1200);
-        } catch (error) {
-          showError('Could not copy names to clipboard.');
-        }
-      };
+          const span = document.createElement("span");
+          span.textContent = name;
 
-      const clearStoredList = key => {
-        localStorage.removeItem(key);
-        renderMemoryLists();
-        renderGeneratedNames(currentNames);
-      };
+          const remove = makeButton("×", "remove", () => removeSaved(name));
+          remove.setAttribute("aria-label", `Remove ${name}`);
 
-      const initialise = () => {
-        const storedBannedWords = getJson(STORAGE.bannedWords, CONFIG.defaultBannedWords);
-        el.bannedWordsInput.value = storedBannedWords.join(', ');
-        el.bannedWordsInput.addEventListener('change', () => setJson(STORAGE.bannedWords, getBannedWords()));
-
-        el.saveApiKeyBtn.addEventListener('click', saveApiKey);
-        el.apiKeyInput.addEventListener('keydown', event => {
-          if (event.key === 'Enter') saveApiKey();
+          pill.append(span, remove);
+          savedNamesBox.appendChild(pill);
         });
+      }
 
-        el.generateBtn.addEventListener('click', generateNames);
-        el.realName.addEventListener('keydown', event => {
-          if (event.key === 'Enter') generateNames();
-        });
+      async function copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Copied");
+        } catch {
+          showToast("Could not copy");
+        }
+      }
 
-        el.copyAllBtn.addEventListener('click', copyAllNames);
-        el.clearSavedBtn.addEventListener('click', () => clearStoredList(STORAGE.saved));
-        el.clearDislikedBtn.addEventListener('click', () => clearStoredList(STORAGE.disliked));
+      function resetRun() {
+        localStorage.setItem(STORAGE.run, "0");
+        setJSON(STORAGE.recent, []);
 
-        updateApiKeyStatus();
-        renderMemoryLists();
-      };
+        currentNames = [];
+        generationCount.textContent = "Run 0";
+        nameList.innerHTML = "";
 
-      initialise();
+        const p = document.createElement("p");
+        p.className = "empty";
+        p.textContent = "Fresh run ready.";
+
+        nameList.appendChild(p);
+        copyAllBtn.disabled = true;
+        showToast("Run memory reset");
+      }
+
+      generateBtn.addEventListener("click", generateNames);
+
+      copyAllBtn.addEventListener("click", () => {
+        if (currentNames.length) {
+          copyText(currentNames.join("\n"));
+        }
+      });
+
+      resetRunBtn.addEventListener("click", resetRun);
+
+      clearPrefsBtn.addEventListener("click", () => {
+        localStorage.removeItem(STORAGE.saved);
+        localStorage.removeItem(STORAGE.excluded);
+        renderSaved();
+        showToast("Preferences cleared");
+      });
+
+      realNameInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          generateNames();
+        }
+      });
+
+      saveSettingsBtn.addEventListener("click", () => {
+        setBlockedWordsFromTextarea();
+        showToast("Settings saved");
+      });
+
+      resetSettingsBtn.addEventListener("click", () => {
+        setJSON(STORAGE.blocked, DEFAULT_BLOCKED_WORDS);
+        renderBlockedWords();
+        showToast("Blocked words reset");
+      });
+
+      renderBlockedWords();
+      renderSaved();
+      generationCount.textContent = `Run ${localStorage.getItem(STORAGE.run) || "0"}`;
     });
   </script>
 </body>
