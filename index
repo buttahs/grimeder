@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grimeder | Grime Artist Name Generator</title>
+  <meta name="description" content="Generate your grime artist name with Grimeder." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700;900&display=swap');
+
+    :root {
+      --grimeder-green: #10b981;
+      --grimeder-lime: #a3e635;
+      --grimeder-dark: #111827;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(16, 185, 129, 0.18), transparent 32rem),
+        radial-gradient(circle at bottom right, rgba(163, 230, 53, 0.12), transparent 28rem),
+        #030712;
+    }
+
+    .neon-text {
+      color: var(--grimeder-green);
+      text-shadow:
+        0 0 7px #059669,
+        0 0 13px #047857,
+        0 0 26px rgba(16, 185, 129, 0.65);
+    }
+
+    .container-box {
+      max-width: 94%;
+      width: 760px;
+    }
+
+    .neon-button {
+      transition: all 0.18s ease-in-out;
+      box-shadow: 0 0 5px #059669;
+    }
+
+    .neon-button:hover:not(:disabled) {
+      box-shadow: 0 0 16px #10b981, 0 0 34px #047857;
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    .neon-button:disabled {
+      background-color: #4b5563;
+      color: #9ca3af;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .chip {
+      border: 1px solid #374151;
+      background: rgba(17, 24, 39, 0.85);
+      color: #bbf7d0;
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.72rem;
+    }
+
+    .result-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.85rem;
+      border: 1px dashed #374151;
+      border-radius: 0.85rem;
+      background: rgba(3, 7, 18, 0.58);
+    }
+
+    .small-btn {
+      transition: all 0.12s ease-in-out;
+      font-size: 0.72rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 9999px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .small-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    .small-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+      transform: none;
+    }
+
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+  </style>
+</head>
+<body class="text-white flex items-center justify-center p-4">
+  <main class="container-box bg-gray-900/90 border border-gray-700 rounded-3xl shadow-2xl overflow-hidden">
+    <section class="p-6 sm:p-8 border-b border-gray-700 bg-gray-950/45">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-[0.35em] text-lime-300 mb-2">Grime Alias Forge</p>
+          <h1 class="text-4xl sm:text-5xl font-black uppercase tracking-tight text-lime-400">Grimeder</h1>
+        </div>
+        <div class="flex flex-wrap gap-2 sm:justify-end" aria-label="Feature tags">
+          <span class="chip">JSON output</span>
+          <span class="chip">Anti-repeat</span>
+          <span class="chip">Local memory</span>
+        </div>
+      </div>
+      <p class="text-gray-400 mt-4 text-sm leading-relaxed">
+        Enter a real name and generate five grime, drill, and UK rap-inspired aliases. Save what slaps, exclude what clanks, and Grimeder will steer future names away from stale territory.
+      </p>
+    </section>
+
+    <section class="p-6 sm:p-8 grid gap-5">
+      <div class="grid gap-4 sm:grid-cols-[1.4fr_0.8fr]">
+        <div>
+          <label for="realName" class="block text-sm font-bold text-gray-300 mb-2">Your real name</label>
+          <input
+            type="text"
+            id="realName"
+            placeholder="e.g. John Smith"
+            autocomplete="name"
+            class="w-full p-3 bg-gray-800 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
+            aria-label="Real name input"
+          />
+        </div>
+
+        <div>
+          <label for="genderSelect" class="block text-sm font-bold text-gray-300 mb-2">Persona</label>
+          <select
+            id="genderSelect"
+            class="w-full p-3 bg-gray-800 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
+            aria-label="Gender persona selection"
+          >
+            <option value="Any">Any / Neutral</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+      </div>
+
+      <details class="bg-gray-800/70 border border-gray-700 rounded-2xl p-4">
+        <summary class="cursor-pointer flex items-center justify-between gap-3">
+          <span class="font-bold text-lime-300">Settings for GitHub / API</span>
+          <span class="text-xs text-gray-500">open</span>
+        </summary>
+
+        <div class="grid gap-4 mt-4">
+          <div>
+            <label for="apiKeyInput" class="block text-sm font-bold text-gray-300 mb-2">Gemini API key</label>
+            <div class="grid gap-2 sm:grid-cols-[1fr_auto]">
+              <input
+                type="password"
+                id="apiKeyInput"
+                placeholder="Paste your key here. It is stored only in this browser."
+                class="w-full p-3 bg-gray-900 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
+                aria-label="Gemini API key input"
+              />
+              <button id="saveApiKeyBtn" class="small-btn bg-lime-500 text-gray-950">Save key</button>
+            </div>
+            <p id="apiKeyStatus" class="text-xs text-gray-500 mt-2">No key saved yet.</p>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-[1fr_0.55fr]">
+            <div>
+              <label for="bannedWordsInput" class="block text-sm font-bold text-gray-300 mb-2">Banned words</label>
+              <input
+                type="text"
+                id="bannedWordsInput"
+                class="w-full p-3 bg-gray-900 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
+                aria-label="Banned words input"
+              />
+              <p class="text-xs text-gray-500 mt-2">Comma-separated. Useful for binning repeat offenders like Vector, Matrix, Unit.</p>
+            </div>
+
+            <div>
+              <label for="varietySelect" class="block text-sm font-bold text-gray-300 mb-2">Variety level</label>
+              <select
+                id="varietySelect"
+                class="w-full p-3 bg-gray-900 text-lime-100 border border-gray-600 rounded-xl focus:ring-2 focus:ring-lime-400 focus:border-lime-400 outline-none"
+                aria-label="Variety level selection"
+              >
+                <option value="balanced">Balanced</option>
+                <option value="wild">Wild</option>
+                <option value="classic">Classic grime</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <button
+        id="generateBtn"
+        class="neon-button w-full py-4 text-lg sm:text-xl font-black bg-lime-500 hover:bg-lime-400 text-gray-950 rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center"
+      >
+        <svg id="loadingSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-950 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span id="buttonText">Generate 5 Names</span>
+      </button>
+
+      <section class="bg-gray-950 border border-lime-700/70 rounded-2xl p-4 sm:p-5 min-h-[180px]">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <h2 class="text-lg font-black text-lime-400">New suggestions</h2>
+          <button id="copyAllBtn" class="hidden small-btn bg-gray-800 text-lime-200 border border-gray-700">Copy all</button>
+        </div>
+        <div id="nameListContainer" class="grid gap-3">
+          <p class="neon-text text-xl sm:text-2xl font-black text-center py-8">Ready to flow...</p>
+        </div>
+        <p id="errorMsg" class="text-red-400 text-sm mt-4 hidden"></p>
+      </section>
+
+      <section class="grid gap-4 lg:grid-cols-2">
+        <div class="bg-gray-800/70 border border-gray-700 rounded-2xl p-4">
+          <div class="flex justify-between items-center gap-3 mb-3">
+            <h2 class="text-sm font-black uppercase tracking-wider text-gray-300">Preferred names</h2>
+            <button id="clearSavedBtn" class="hidden text-xs text-red-300 hover:text-red-200 font-black">Clear</button>
+          </div>
+          <div id="savedNamesContainer" class="grid gap-2"></div>
+        </div>
+
+        <div class="bg-gray-800/70 border border-gray-700 rounded-2xl p-4">
+          <div class="flex justify-between items-center gap-3 mb-3">
+            <h2 class="text-sm font-black uppercase tracking-wider text-gray-300">Excluded names</h2>
+            <button id="clearDislikedBtn" class="hidden text-xs text-red-300 hover:text-red-200 font-black">Clear</button>
+          </div>
+          <div id="dislikedNamesContainer" class="grid gap-2"></div>
+        </div>
+      </section>
+
+      <footer class="text-xs text-gray-500 leading-relaxed">
+        GitHub note: this page is static, so do not commit a real API key into the file. Paste it in the settings panel instead, or use a small backend/proxy if you make Grimeder public.
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const el = {
+        realName: document.getElementById('realName'),
+        genderSelect: document.getElementById('genderSelect'),
+        varietySelect: document.getElementById('varietySelect'),
+        bannedWordsInput: document.getElementById('bannedWordsInput'),
+        apiKeyInput: document.getElementById('apiKeyInput'),
+        saveApiKeyBtn: document.getElementById('saveApiKeyBtn'),
+        apiKeyStatus: document.getElementById('apiKeyStatus'),
+        generateBtn: document.getElementById('generateBtn'),
+        buttonText: document.getElementById('buttonText'),
+        loadingSpinner: document.getElementById('loadingSpinner'),
+        nameListContainer: document.getElementById('nameListContainer'),
+        savedNamesContainer: document.getElementById('savedNamesContainer'),
+        dislikedNamesContainer: document.getElementById('dislikedNamesContainer'),
+        clearSavedBtn: document.getElementById('clearSavedBtn'),
+        clearDislikedBtn: document.getElementById('clearDislikedBtn'),
+        copyAllBtn: document.getElementById('copyAllBtn'),
+        errorMsg: document.getElementById('errorMsg')
+      };
+
+      const CONFIG = {
+        model: 'gemini-2.5-flash',
+        maxRetries: 4,
+        maxPreferences: 20,
+        maxRecent: 40,
+        defaultBannedWords: ['Vector', 'Matrix', 'Unit', 'Agent', 'Cipher']
+      };
+
+      const STORAGE = {
+        apiKey: 'grimeder_api_key',
+        saved: 'grimeder_saved_names_v2',
+        disliked: 'grimeder_disliked_names_v2',
+        recent: 'grimeder_recent_names_v2',
+        bannedWords: 'grimeder_banned_words_v2'
+      };
+
+      const FOUNDATION_GRIME_INFLUENCES = [
+        'Wiley', 'Dizzee Rascal', 'Kano', 'Ghetts', 'D Double E', 'Skepta', 'Jme',
+        'Lethal Bizzle', 'Tinchy Stryder', 'Jammer', 'Flowdan', 'P Money', 'Devlin',
+        'Chip', 'Big Narstie', 'Frisco', 'President T', 'Footsie', 'Riko Dan',
+        'Lady Leshurr', 'Lady Sovereign', 'Novelist', 'Manga Saint Hilare', 'Ruff Sqwad',
+        'Roll Deep', 'Boy Better Know', 'Nasty Crew'
+      ];
+
+      const MODERN_UK_RAP_INFLUENCES = [
+        'Stormzy', 'Dave', 'Little Simz', 'Central Cee', 'Loyle Carner', 'AJ Tracey',
+        'Knucks', 'Pa Salieu', 'Headie One', 'K-Trap', 'Unknown T', 'Meekz', 'Nines',
+        'Aitch', 'Jim Legxacy', 'Nemzzz', 'J Hus', 'Fredo', 'M Huncho', 'Digga D'
+      ];
+
+      const EMERGING_UK_INFLUENCES = [
+        'Len', 'Lancey Foux', 'Fimiguerrero', 'Pozer', 'Mazza L20', 'Ceebo', 'Caldo',
+        'Reuben Aziz', 'Cristale', 'Blanco', 'BXKS', 'KwolleM', 'Sainté', 'SamRecks'
+      ];
+
+      const TITLE_WORDS = [
+        'Capo', 'Don', 'General', 'Major', 'Lord', 'Lady', 'Queen', 'Baron', 'Saint',
+        'Ghost', 'Kid', 'Boss', 'Murk', 'Ace', 'Prez', 'Duke', 'Sir', 'Madam', 'Prince',
+        'Commander', 'Sarge', 'Rascal', 'Skipper', 'Villain'
+      ];
+
+      const TEXTURE_WORDS = [
+        'Static', 'Frost', 'Gravel', 'Diesel', 'Noir', 'Ash', 'Voltage', 'Sleet',
+        'Concrete', 'Rust', 'Bassline', 'Night', 'Signal', 'Pressure', 'Grit', 'Tar',
+        'Radar', 'Wraith', 'Siren', 'Motive', 'Packet', 'Switch', 'Mercury', 'Iron',
+        'Quartz', 'Rumble', 'Hollow', 'Brass', 'Phantom', 'Kettle', 'Wire', 'Latch'
+      ];
+
+      const UK_PLACE_FLAVOUR = [
+        'E3', 'E8', 'E14', 'N15', 'SE15', 'Bow', 'Peckham', 'Tottenham', 'Brixton',
+        'Newham', 'Hackney', 'Lewisham', 'Croydon', 'Woolwich', 'Acton', 'Ilford',
+        'Walthamstow', 'Camden', 'Stratford', 'Deptford', 'Norwood', 'Plaistow'
+      ];
+
+      const NAME_PATTERNS = [
+        'Initial plus sharp noun, for example J Static',
+        'Title plus name syllable, for example Don Toba',
+        'Place or postcode plus abstract noun, for example E3 Voltage',
+        'Single-word alias, for example Frostline',
+        'Two-word contrast, for example Velvet Murk',
+        'Number suffix, for example Kettle 45',
+        'Royal title with rough texture, for example Baron Gravel',
+        'Mutated surname fragment, for example Tobz or Smitto',
+        'Sound-system style name, for example Bassline Saint',
+        'Pirate-radio callsign, for example N15 Siren'
+      ];
+
+      const VARIETY_GUIDANCE = {
+        balanced: 'Balance authenticity, punchiness, and variety. Names should be usable, not just weird.',
+        wild: 'Push the names further into odd, memorable, high-contrast territory. Keep them pronounceable.',
+        classic: 'Lean into early grime, pirate radio, road rap, clashes, reloads, and sharp MC aliases.'
+      };
+
+      let currentNames = [];
+
+      const getJson = (key, fallback) => {
+        try {
+          const value = localStorage.getItem(key);
+          return value ? JSON.parse(value) : fallback;
+        } catch (error) {
+          console.warn(`Could not parse ${key}`, error);
+          return fallback;
+        }
+      };
+
+      const setJson = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+
+      const normalise = value => String(value || '').trim();
+
+      const uniqueCaseInsensitive = names => {
+        const seen = new Set();
+        return names.filter(name => {
+          const key = name.toLowerCase();
+          if (!name || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      };
+
+      const sample = (array, count) => {
+        const shuffled = [...array].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, count);
+      };
+
+      const getSavedNames = () => getJson(STORAGE.saved, []);
+      const getDislikedNames = () => getJson(STORAGE.disliked, []);
+      const getRecentNames = () => getJson(STORAGE.recent, []);
+
+      const getBannedWords = () => {
+        return el.bannedWordsInput.value
+          .split(',')
+          .map(word => word.trim())
+          .filter(Boolean);
+      };
+
+      const saveName = name => {
+        const saved = uniqueCaseInsensitive([name, ...getSavedNames()]).slice(0, CONFIG.maxPreferences);
+        const disliked = getDislikedNames().filter(item => item.toLowerCase() !== name.toLowerCase());
+        setJson(STORAGE.saved, saved);
+        setJson(STORAGE.disliked, disliked);
+        renderMemoryLists();
+        renderGeneratedNames(currentNames);
+      };
+
+      const dislikeName = name => {
+        const disliked = uniqueCaseInsensitive([name, ...getDislikedNames()]).slice(0, CONFIG.maxPreferences);
+        const saved = getSavedNames().filter(item => item.toLowerCase() !== name.toLowerCase());
+        setJson(STORAGE.disliked, disliked);
+        setJson(STORAGE.saved, saved);
+        renderMemoryLists();
+        renderGeneratedNames(currentNames);
+      };
+
+      const removeName = (key, name) => {
+        setJson(key, getJson(key, []).filter(item => item.toLowerCase() !== name.toLowerCase()));
+        renderMemoryLists();
+        renderGeneratedNames(currentNames);
+      };
+
+      const rememberRecent = names => {
+        const recent = uniqueCaseInsensitive([...names, ...getRecentNames()]).slice(0, CONFIG.maxRecent);
+        setJson(STORAGE.recent, recent);
+      };
+
+      const tokenise = name => {
+        return name
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, ' ')
+          .split(/\s+/)
+          .filter(token => token.length >= 3);
+      };
+
+      const hasBlockedContent = (name, blockedItems) => {
+        const lower = name.toLowerCase();
+        return blockedItems.some(item => lower.includes(item.toLowerCase()));
+      };
+
+      const getApiKey = () => localStorage.getItem(STORAGE.apiKey) || '';
+
+      const updateApiKeyStatus = () => {
+        const hasKey = Boolean(getApiKey());
+        el.apiKeyStatus.textContent = hasKey
+          ? 'API key saved in this browser. It is not written into the HTML file.'
+          : 'No key saved yet.';
+        el.apiKeyStatus.className = hasKey ? 'text-xs text-lime-300 mt-2' : 'text-xs text-gray-500 mt-2';
+      };
+
+      const saveApiKey = () => {
+        const key = normalise(el.apiKeyInput.value);
+        if (!key) {
+          localStorage.removeItem(STORAGE.apiKey);
+        } else {
+          localStorage.setItem(STORAGE.apiKey, key);
+          el.apiKeyInput.value = '';
+        }
+        updateApiKeyStatus();
+      };
+
+      const setLoading = isLoading => {
+        el.generateBtn.disabled = isLoading;
+        el.realName.disabled = isLoading;
+        el.genderSelect.disabled = isLoading;
+        el.loadingSpinner.classList.toggle('hidden', !isLoading);
+        el.buttonText.textContent = isLoading ? 'Forging identities...' : 'Generate 5 Names';
+        if (isLoading) {
+          el.errorMsg.classList.add('hidden');
+          el.copyAllBtn.classList.add('hidden');
+          el.nameListContainer.replaceChildren();
+          const loading = document.createElement('p');
+          loading.className = 'neon-text text-xl sm:text-2xl font-black text-center py-8';
+          loading.textContent = 'Tuning pirate radio static...';
+          el.nameListContainer.appendChild(loading);
+        }
+      };
+
+      const showError = message => {
+        el.errorMsg.textContent = message;
+        el.errorMsg.classList.remove('hidden');
+      };
+
+      const buildInfluencePack = () => ({
+        foundation: sample(FOUNDATION_GRIME_INFLUENCES, 5),
+        modern: sample(MODERN_UK_RAP_INFLUENCES, 4),
+        emerging: sample(EMERGING_UK_INFLUENCES, 3),
+        titles: sample(TITLE_WORDS, 8),
+        textures: sample(TEXTURE_WORDS, 10),
+        places: sample(UK_PLACE_FLAVOUR, 8),
+        patterns: sample(NAME_PATTERNS, 6)
+      });
+
+      const buildSystemPrompt = ({ gender, variety, bannedWords, savedNames, dislikedNames, recentNames }) => {
+        const pack = buildInfluencePack();
+        const dislikedTokens = uniqueCaseInsensitive(dislikedNames.flatMap(tokenise)).slice(0, 30);
+        const genderGuidance = gender === 'Any'
+          ? 'Use neutral or any-gender personas. Avoid making gendered titles mandatory.'
+          : `The persona should reflect a ${gender} identity where it feels natural, without becoming repetitive.`;
+
+        return `You create authentic, funny-but-credible grime, drill, and UK rap artist aliases.
+
+Return strict JSON only in this exact shape: {"names":["Name One","Name Two","Name Three","Name Four","Name Five"]}
+
+Rules:
+- Generate exactly 5 names.
+- Each name must be 1 to 3 words.
+- Each name must be pronounceable and suitable for a mixtape cover, radio set, clash flyer, or festival billing.
+- Make all 5 names structurally different from each other.
+- Avoid parody, cringe fantasy names, and direct copies of real artists.
+- Do not use real artist names or obvious close variants.
+- Use fragments, initials, syllables, sound, rhythm, postcode flavour, and UK MC naming conventions.
+- ${genderGuidance}
+- Variety mode: ${VARIETY_GUIDANCE[variety] || VARIETY_GUIDANCE.balanced}
+
+Avoid these banned words or close variations: ${bannedWords.join(', ') || 'none'}.
+Avoid names similar to disliked names: ${dislikedNames.join(', ') || 'none'}.
+Avoid overusing these disliked tokens: ${dislikedTokens.join(', ') || 'none'}.
+Avoid repeating recent names: ${recentNames.join(', ') || 'none'}.
+
+Positive influence from liked names: ${savedNames.join(', ') || 'none'}.
+
+Rotating style ingredients, for influence only:
+- Foundation grime references: ${pack.foundation.join(', ')}
+- Modern UK rap references: ${pack.modern.join(', ')}
+- Emerging UK references: ${pack.emerging.join(', ')}
+- Title words: ${pack.titles.join(', ')}
+- Texture words: ${pack.textures.join(', ')}
+- Place/postcode flavour: ${pack.places.join(', ')}
+- Naming patterns to mix: ${pack.patterns.join(' | ')}
+
+Important: names should feel culturally grounded, punchy, and fresh. High variety beats safe repetition.`;
+      };
+
+      const parseNames = text => {
+        const clean = String(text || '')
+          .trim()
+          .replace(/^```json/i, '')
+          .replace(/^```/i, '')
+          .replace(/```$/i, '')
+          .trim();
+
+        try {
+          const parsed = JSON.parse(clean);
+          if (Array.isArray(parsed)) return parsed;
+          if (Array.isArray(parsed.names)) return parsed.names;
+        } catch (error) {
+          console.warn('Structured parse failed, falling back to line parsing.', error);
+        }
+
+        return clean
+          .split('\n')
+          .map(line => line.replace(/^[-*\d.)\s]+/, '').trim())
+          .filter(Boolean);
+      };
+
+      const cleanNames = (names, bannedWords, dislikedNames, recentNames) => {
+        const blocked = [...bannedWords, ...dislikedNames];
+        const recentLower = new Set(recentNames.map(name => name.toLowerCase()));
+
+        return uniqueCaseInsensitive(names)
+          .map(name => String(name).replace(/^['"\s]+|['"\s]+$/g, '').trim())
+          .filter(name => name.length >= 2)
+          .filter(name => name.length <= 36)
+          .filter(name => !hasBlockedContent(name, blocked))
+          .filter(name => !recentLower.has(name.toLowerCase()))
+          .slice(0, 5);
+      };
+
+      const requestNames = async ({ realName, gender, variety }) => {
+        const apiKey = getApiKey();
+        if (!apiKey) {
+          throw new Error('Paste and save your Gemini API key in Settings first. For GitHub, do not commit the key into the file.');
+        }
+
+        const bannedWords = getBannedWords();
+        const savedNames = getSavedNames();
+        const dislikedNames = getDislikedNames();
+        const recentNames = getRecentNames();
+        const systemPrompt = buildSystemPrompt({ gender, variety, bannedWords, savedNames, dislikedNames, recentNames });
+
+        const payload = {
+          contents: [
+            {
+              role: 'user',
+              parts: [
+                {
+                  text: `Generate grime artist aliases for this real name: ${realName}. Use the real name as inspiration, but do not expose the full real name unless it naturally works as a short alias.`
+                }
+              ]
+            }
+          ],
+          systemInstruction: {
+            parts: [{ text: systemPrompt }]
+          },
+          generationConfig: {
+            temperature: variety === 'wild' ? 1.25 : 0.95,
+            topP: 0.95,
+            responseMimeType: 'application/json',
+            responseSchema: {
+              type: 'OBJECT',
+              properties: {
+                names: {
+                  type: 'ARRAY',
+                  minItems: 5,
+                  maxItems: 5,
+                  items: { type: 'STRING' }
+                }
+              },
+              required: ['names']
+            }
+          }
+        };
+
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.model}:generateContent`;
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey
+          },
+          body: JSON.stringify(payload)
+        };
+
+        const response = await exponentialBackoffFetch(endpoint, options);
+        const result = await response.json();
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        const parsed = parseNames(text);
+        const cleaned = cleanNames(parsed, bannedWords, dislikedNames, recentNames);
+
+        if (cleaned.length === 0) {
+          throw new Error('The model replied, but every name was filtered out. Try removing a few banned words or clearing recent/excluded names.');
+        }
+
+        return cleaned;
+      };
+
+      const exponentialBackoffFetch = async (url, options, retry = 0) => {
+        const response = await fetch(url, options);
+
+        if ((response.status === 429 || response.status >= 500) && retry < CONFIG.maxRetries) {
+          const delay = Math.pow(2, retry) * 850 + Math.floor(Math.random() * 250);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return exponentialBackoffFetch(url, options, retry + 1);
+        }
+
+        if (!response.ok) {
+          let details = '';
+          try {
+            const errorData = await response.json();
+            details = errorData.error?.message ? ` ${errorData.error.message}` : '';
+          } catch (_) {
+            details = ` ${response.statusText}`;
+          }
+          throw new Error(`API error ${response.status}.${details}`);
+        }
+
+        return response;
+      };
+
+      const makeMemoryRow = (name, actionLabel, onAction) => {
+        const row = document.createElement('div');
+        row.className = 'flex justify-between items-center gap-3 p-2 rounded-xl bg-gray-950/70 border border-gray-700';
+
+        const text = document.createElement('span');
+        text.className = 'text-sm text-lime-100';
+        text.textContent = name;
+
+        const button = document.createElement('button');
+        button.className = 'small-btn bg-gray-800 text-gray-300 border border-gray-700';
+        button.textContent = actionLabel;
+        button.addEventListener('click', onAction);
+
+        row.append(text, button);
+        return row;
+      };
+
+      const renderMemoryLists = () => {
+        const savedNames = getSavedNames();
+        const dislikedNames = getDislikedNames();
+
+        el.savedNamesContainer.replaceChildren();
+        el.dislikedNamesContainer.replaceChildren();
+
+        if (savedNames.length === 0) {
+          const empty = document.createElement('p');
+          empty.className = 'text-sm text-gray-500 italic';
+          empty.textContent = 'No preferred names saved yet.';
+          el.savedNamesContainer.appendChild(empty);
+        } else {
+          savedNames.forEach(name => {
+            el.savedNamesContainer.appendChild(makeMemoryRow(name, 'Remove', () => removeName(STORAGE.saved, name)));
+          });
+        }
+
+        if (dislikedNames.length === 0) {
+          const empty = document.createElement('p');
+          empty.className = 'text-sm text-gray-500 italic';
+          empty.textContent = 'No excluded names yet.';
+          el.dislikedNamesContainer.appendChild(empty);
+        } else {
+          dislikedNames.forEach(name => {
+            el.dislikedNamesContainer.appendChild(makeMemoryRow(name, 'Allow', () => removeName(STORAGE.disliked, name)));
+          });
+        }
+
+        el.clearSavedBtn.classList.toggle('hidden', savedNames.length === 0);
+        el.clearDislikedBtn.classList.toggle('hidden', dislikedNames.length === 0);
+      };
+
+      const renderGeneratedNames = names => {
+        currentNames = names;
+        el.nameListContainer.replaceChildren();
+        el.copyAllBtn.classList.toggle('hidden', names.length === 0);
+
+        if (names.length === 0) {
+          const empty = document.createElement('p');
+          empty.className = 'text-center text-gray-500 py-8';
+          empty.textContent = 'No names generated yet.';
+          el.nameListContainer.appendChild(empty);
+          return;
+        }
+
+        const savedLower = new Set(getSavedNames().map(name => name.toLowerCase()));
+        const dislikedLower = new Set(getDislikedNames().map(name => name.toLowerCase()));
+
+        names.forEach((name, index) => {
+          const card = document.createElement('div');
+          card.className = 'result-card';
+
+          const title = document.createElement('div');
+          title.className = 'neon-text text-lg sm:text-xl font-black';
+          title.textContent = `${index + 1}. ${name}`;
+
+          const actions = document.createElement('div');
+          actions.className = 'flex gap-2 flex-wrap justify-end';
+
+          const exclude = document.createElement('button');
+          exclude.className = 'small-btn bg-red-700 text-white';
+          exclude.textContent = dislikedLower.has(name.toLowerCase()) ? 'Excluded' : 'Exclude';
+          exclude.disabled = dislikedLower.has(name.toLowerCase()) || savedLower.has(name.toLowerCase());
+          exclude.addEventListener('click', () => dislikeName(name));
+
+          const save = document.createElement('button');
+          save.className = 'small-btn bg-lime-500 text-gray-950';
+          save.textContent = savedLower.has(name.toLowerCase()) ? 'Saved' : 'Save';
+          save.disabled = savedLower.has(name.toLowerCase()) || dislikedLower.has(name.toLowerCase());
+          save.addEventListener('click', () => saveName(name));
+
+          actions.append(exclude, save);
+          card.append(title, actions);
+          el.nameListContainer.appendChild(card);
+        });
+      };
+
+      const generateNames = async () => {
+        const realName = normalise(el.realName.value);
+        if (realName.length < 2) {
+          showError('Please enter a name with at least two characters.');
+          return;
+        }
+
+        setLoading(true);
+        try {
+          const names = await requestNames({
+            realName,
+            gender: el.genderSelect.value,
+            variety: el.varietySelect.value
+          });
+          rememberRecent(names);
+          renderGeneratedNames(names);
+        } catch (error) {
+          console.error('Grimeder generation error:', error);
+          el.nameListContainer.replaceChildren();
+          const offline = document.createElement('p');
+          offline.className = 'text-red-400 text-xl font-black text-center py-8';
+          offline.textContent = 'System offline';
+          el.nameListContainer.appendChild(offline);
+          showError(error.message || 'Failed to forge identities. Check the console for details.');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const copyAllNames = async () => {
+        if (!currentNames.length) return;
+        try {
+          await navigator.clipboard.writeText(currentNames.join('\n'));
+          el.copyAllBtn.textContent = 'Copied';
+          setTimeout(() => { el.copyAllBtn.textContent = 'Copy all'; }, 1200);
+        } catch (error) {
+          showError('Could not copy names to clipboard.');
+        }
+      };
+
+      const clearStoredList = key => {
+        localStorage.removeItem(key);
+        renderMemoryLists();
+        renderGeneratedNames(currentNames);
+      };
+
+      const initialise = () => {
+        const storedBannedWords = getJson(STORAGE.bannedWords, CONFIG.defaultBannedWords);
+        el.bannedWordsInput.value = storedBannedWords.join(', ');
+        el.bannedWordsInput.addEventListener('change', () => setJson(STORAGE.bannedWords, getBannedWords()));
+
+        el.saveApiKeyBtn.addEventListener('click', saveApiKey);
+        el.apiKeyInput.addEventListener('keydown', event => {
+          if (event.key === 'Enter') saveApiKey();
+        });
+
+        el.generateBtn.addEventListener('click', generateNames);
+        el.realName.addEventListener('keydown', event => {
+          if (event.key === 'Enter') generateNames();
+        });
+
+        el.copyAllBtn.addEventListener('click', copyAllNames);
+        el.clearSavedBtn.addEventListener('click', () => clearStoredList(STORAGE.saved));
+        el.clearDislikedBtn.addEventListener('click', () => clearStoredList(STORAGE.disliked));
+
+        updateApiKeyStatus();
+        renderMemoryLists();
+      };
+
+      initialise();
+    });
+  </script>
+</body>
+</html>
