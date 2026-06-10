@@ -6,350 +6,375 @@
   <title>Grimeder</title>
   <style>
     :root {
-      --bg:#070b10; --panel:#111827; --panel2:#1f2937; --text:#f9fafb;
-      --muted:#9ca3af; --lime:#a3e635; --green:#10b981; --red:#dc2626;
+      --panel: #111827;
+      --panel-soft: rgba(17, 24, 39, 0.72);
+      --line: rgba(163, 230, 53, 0.22);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --lime: #a3e635;
+      --green: #10b981;
+      --red: #dc2626;
+      --slate: #334155;
     }
 
     * {
-      box-sizing:border-box;
+      box-sizing: border-box;
     }
 
     body {
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      color:var(--text);
-      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       background:
-        radial-gradient(circle at top left, rgba(163,230,53,.14), transparent 30rem),
-        radial-gradient(circle at bottom right, rgba(16,185,129,.12), transparent 28rem),
-        linear-gradient(145deg,#020617,#0b1120 45%,#070b10);
+        radial-gradient(circle at top left, rgba(163, 230, 53, 0.16), transparent 28rem),
+        radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.12), transparent 30rem),
+        linear-gradient(145deg, #020617, #0b1120 46%, #050814);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
     .app {
-      width:min(760px,100%);
-      background:rgba(17,24,39,.95);
-      border:1px solid rgba(163,230,53,.25);
-      border-radius:24px;
-      overflow:hidden;
-      box-shadow:0 24px 80px rgba(0,0,0,.55);
+      width: min(820px, 100%);
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55);
     }
 
     header {
-      padding:28px;
-      border-bottom:1px solid rgba(163,230,53,.18);
-      background:linear-gradient(135deg,rgba(163,230,53,.12),rgba(16,185,129,.04));
+      padding: 30px;
+      border-bottom: 1px solid rgba(163, 230, 53, 0.18);
+      background:
+        linear-gradient(135deg, rgba(163, 230, 53, 0.13), rgba(16, 185, 129, 0.04)),
+        rgba(2, 6, 23, 0.34);
     }
 
     h1 {
-      margin:0;
-      font-size:clamp(2.4rem,8vw,5rem);
-      line-height:.9;
-      letter-spacing:-.08em;
-      text-transform:uppercase;
-      color:var(--lime);
-      text-shadow:0 0 8px rgba(163,230,53,.72),0 0 24px rgba(16,185,129,.35);
+      margin: 0;
+      color: var(--lime);
+      font-size: clamp(2.4rem, 8vw, 5.2rem);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 8px rgba(163, 230, 53, 0.72),
+        0 0 28px rgba(16, 185, 129, 0.38);
     }
 
     .strap {
-      margin:12px 0 0;
-      color:var(--muted);
-      line-height:1.5;
+      margin: 12px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 68ch;
     }
 
     .badges {
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:14px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
     }
 
     .badge {
-      border:1px solid rgba(163,230,53,.22);
-      background:rgba(2,6,23,.35);
-      color:#d9f99d;
-      border-radius:999px;
-      padding:6px 10px;
-      font-size:.72rem;
+      border: 1px solid rgba(163, 230, 53, 0.24);
+      background: rgba(2, 6, 23, 0.35);
+      color: #d9f99d;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.72rem;
     }
 
     main {
-      padding:28px;
-      display:grid;
-      gap:18px;
+      padding: 28px;
+      display: grid;
+      gap: 18px;
     }
 
     label {
-      display:block;
-      color:#d1d5db;
-      font-size:.78rem;
-      margin-bottom:8px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
+      display: block;
+      margin-bottom: 8px;
+      color: #d1d5db;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     input,
     select,
     textarea {
-      width:100%;
-      border:1px solid rgba(156,163,175,.28);
-      border-radius:14px;
-      background:rgba(2,6,23,.54);
-      color:var(--text);
-      padding:13px 14px;
-      font:inherit;
-      outline:none;
-    }
-
-    textarea {
-      min-height:70px;
-      resize:vertical;
+      width: 100%;
+      border: 1px solid rgba(156, 163, 175, 0.28);
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.54);
+      color: var(--text);
+      padding: 13px 14px;
+      font: inherit;
+      outline: none;
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color:rgba(163,230,53,.65);
-      box-shadow:0 0 0 4px rgba(163,230,53,.11);
+      border-color: rgba(163, 230, 53, 0.65);
+      box-shadow: 0 0 0 4px rgba(163, 230, 53, 0.11);
+    }
+
+    textarea {
+      min-height: 78px;
+      resize: vertical;
+      line-height: 1.45;
     }
 
     .hint {
-      margin:8px 0 0;
-      color:var(--muted);
-      font-size:.74rem;
-      line-height:1.45;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.45;
     }
 
     .grid {
-      display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
     }
 
-    @media (min-width:700px) {
+    @media (min-width: 720px) {
       .grid.two {
-        grid-template-columns:1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid.three {
+        grid-template-columns: 1fr 1fr 1fr;
       }
     }
 
     .actions {
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     button {
-      border:none;
-      border-radius:14px;
-      cursor:pointer;
-      font:inherit;
-      font-weight:800;
-      transition:transform .12s, box-shadow .12s, opacity .12s;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 850;
+      transition: transform 0.12s, box-shadow 0.12s, opacity 0.12s;
     }
 
     button:hover:not(:disabled) {
-      transform:translateY(-1px);
+      transform: translateY(-1px);
     }
 
     button:disabled {
-      cursor:not-allowed;
-      opacity:.55;
+      cursor: not-allowed;
+      opacity: 0.55;
     }
 
     .primary {
-      flex:1 1 240px;
-      padding:16px 18px;
-      color:#111827;
-      background:linear-gradient(135deg,var(--lime),var(--green));
-      box-shadow:0 0 16px rgba(163,230,53,.25);
-      text-transform:uppercase;
-      letter-spacing:.08em;
+      flex: 1 1 260px;
+      padding: 16px 18px;
+      color: #111827;
+      background: linear-gradient(135deg, var(--lime), var(--green));
+      box-shadow: 0 0 16px rgba(163, 230, 53, 0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .secondary {
-      padding:12px 14px;
-      color:#d9f99d;
-      background:rgba(31,41,55,.9);
-      border:1px solid rgba(163,230,53,.2);
+      padding: 12px 14px;
+      color: #d9f99d;
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(163, 230, 53, 0.2);
+    }
+
+    .box,
+    details {
+      border: 1px solid rgba(163, 230, 53, 0.18);
+      background: rgba(2, 6, 23, 0.42);
+      border-radius: 18px;
     }
 
     .box {
-      border:1px solid rgba(163,230,53,.18);
-      background:rgba(2,6,23,.42);
-      border-radius:18px;
-      padding:18px;
+      padding: 18px;
+    }
+
+    details {
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 15px 18px;
+      color: #d9f99d;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+
+    details[open] summary {
+      border-bottom: 1px solid rgba(163, 230, 53, 0.12);
+    }
+
+    .settings {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
     }
 
     .section-title {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
-      color:var(--lime);
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      font-size:.86rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--lime);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.86rem;
     }
 
     .empty {
-      text-align:center;
-      color:var(--muted);
-      font-size:.92rem;
-      padding:18px 8px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      padding: 18px 8px;
     }
 
     .name-list,
     .saved-list {
-      display:grid;
-      gap:10px;
+      display: grid;
+      gap: 10px;
     }
 
     .name-item {
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-      align-items:center;
-      padding:14px;
-      border:1px dashed rgba(156,163,175,.24);
-      background:rgba(17,24,39,.58);
-      border-radius:14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 14px;
+      border: 1px dashed rgba(156, 163, 175, 0.24);
+      background: var(--panel-soft);
+      border-radius: 14px;
     }
 
-    @media (min-width:560px) {
+    @media (min-width: 600px) {
       .name-item {
-        grid-template-columns:1fr auto;
+        grid-template-columns: 1fr auto;
       }
     }
 
     .name-text {
-      color:#bbf7d0;
-      font-size:clamp(1.05rem,5vw,1.45rem);
-      font-weight:900;
-      letter-spacing:-.04em;
-      text-shadow:0 0 12px rgba(16,185,129,.32);
-      overflow-wrap:anywhere;
+      color: #bbf7d0;
+      font-size: clamp(1.08rem, 5vw, 1.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.32);
+      overflow-wrap: anywhere;
     }
 
     .name-meta {
-      color:var(--muted);
-      font-size:.72rem;
-      margin-top:4px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      margin-top: 4px;
     }
 
     .mini-actions {
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .pillbtn {
-      border-radius:999px;
-      padding:8px 11px;
-      font-size:.72rem;
-      text-transform:uppercase;
-      letter-spacing:.04em;
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .save {
-      background:var(--lime);
-      color:#111827;
+      background: var(--lime);
+      color: #111827;
     }
 
     .exclude {
-      background:var(--red);
-      color:#fff;
+      background: var(--red);
+      color: #fff;
     }
 
     .copy {
-      background:#334155;
-      color:#fff;
+      background: var(--slate);
+      color: #fff;
     }
 
     .saved-pill {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      background:rgba(17,24,39,.75);
-      border:1px solid rgba(156,163,175,.18);
-      border-radius:12px;
-      padding:10px 12px;
-      color:#d9f99d;
-      font-size:.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: rgba(17, 24, 39, 0.75);
+      border: 1px solid rgba(156, 163, 175, 0.18);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: #d9f99d;
+      font-size: 0.9rem;
+    }
+
+    .remove,
+    .danger {
+      color: #fca5a5;
+      background: transparent;
+      padding: 0;
     }
 
     .remove {
-      color:#fca5a5;
-      background:transparent;
-      font-size:1rem;
-      padding:0 4px;
-    }
-
-    details {
-      border-radius:18px;
-      border:1px solid rgba(156,163,175,.18);
-      background:rgba(17,24,39,.45);
-      overflow:hidden;
-    }
-
-    summary {
-      cursor:pointer;
-      padding:14px 18px;
-      color:#d9f99d;
-      font-weight:900;
-      text-transform:uppercase;
-      font-size:.8rem;
-      letter-spacing:.08em;
-    }
-
-    .settings {
-      padding:18px;
-      display:grid;
-      gap:14px;
+      font-size: 1rem;
+      padding: 0 4px;
     }
 
     .danger {
-      color:#fca5a5;
-      background:transparent;
-      padding:0;
-      font-size:.76rem;
-      text-decoration:underline;
-      text-underline-offset:4px;
+      font-size: 0.76rem;
+      text-decoration: underline;
+      text-underline-offset: 4px;
     }
 
     .toast {
-      position:fixed;
-      left:50%;
-      bottom:24px;
-      transform:translateX(-50%);
-      background:#d9f99d;
-      color:#111827;
-      font-weight:900;
-      border-radius:999px;
-      padding:10px 14px;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .18s, transform .18s;
-      max-width:calc(100% - 32px);
-      text-align:center;
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      background: #d9f99d;
+      color: #111827;
+      font-weight: 900;
+      border-radius: 999px;
+      padding: 10px 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s, transform 0.18s;
+      max-width: calc(100% - 32px);
+      text-align: center;
+      z-index: 5;
     }
 
     .toast.show {
-      opacity:1;
-      transform:translateX(-50%) translateY(-4px);
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
     }
 
     .footer {
-      color:var(--muted);
-      font-size:.75rem;
-      line-height:1.5;
-      text-align:center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      text-align: center;
     }
   </style>
 </head>
@@ -357,12 +382,13 @@
   <div class="app">
     <header>
       <h1>Grimeder</h1>
-      <p class="strap">A no-AI grime artist name generator. No API key, no backend, no quota goblin. Just curated word banks and a tiny algorithm with cold hands.</p>
+      <p class="strap">A no-AI grime artist name generator. No API key, no backend, no postcode roulette. Just curated word banks, local memory and a little algorithmic bass pressure.</p>
       <div class="badges">
         <span class="badge">Zero API</span>
         <span class="badge">GitHub Pages ready</span>
-        <span class="badge">Local memory</span>
-        <span class="badge">Save / exclude</span>
+        <span class="badge">No postcodes</span>
+        <span class="badge">Numbers default off</span>
+        <span class="badge">Scored output</span>
       </div>
     </header>
 
@@ -370,10 +396,10 @@
       <div>
         <label for="realName">Your real name</label>
         <input id="realName" type="text" autocomplete="name" placeholder="e.g. John Smith" />
-        <p class="hint">Used for initials, syllables, number seeds and tiny personal flavour sparks.</p>
+        <p class="hint">Used for initials, syllables and tiny personalised sparks.</p>
       </div>
 
-      <div class="grid two">
+      <div class="grid three">
         <div>
           <label for="persona">Persona</label>
           <select id="persona">
@@ -392,6 +418,36 @@
             <option value="dark">Dark / drill-adjacent</option>
             <option value="wild">Wildcard pirate radio</option>
           </select>
+        </div>
+
+        <div>
+          <label for="numbers">Numbers</label>
+          <select id="numbers">
+            <option value="off">Off</option>
+            <option value="rare">Rare</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div>
+          <label for="places">Place flavour</label>
+          <select id="places">
+            <option value="low">Low</option>
+            <option value="off">Off</option>
+            <option value="medium">Medium</option>
+          </select>
+          <p class="hint">Place names only. No postcodes.</p>
+        </div>
+
+        <div>
+          <label for="strictness">Taste filter</label>
+          <select id="strictness">
+            <option value="normal">Normal</option>
+            <option value="strict">Stricter</option>
+            <option value="loose">Looser</option>
+          </select>
+          <p class="hint">Stricter rejects longer, sillier or more repetitive names.</p>
         </div>
       </div>
 
@@ -427,8 +483,9 @@
           <div>
             <label for="blockedWords">Blocked words</label>
             <textarea id="blockedWords" spellcheck="false"></textarea>
-            <p class="hint">Comma-separated. Use this to kill repeat offenders like Vector, Matrix, Unit, Cipher, Agent.</p>
+            <p class="hint">Comma-separated. Good for repeat offenders like Vector, Matrix, Unit, Cipher, Agent.</p>
           </div>
+
           <div class="actions">
             <button id="saveSettingsBtn" class="secondary">Save settings</button>
             <button id="resetSettingsBtn" class="secondary">Reset blocked words</button>
@@ -436,7 +493,7 @@
         </div>
       </details>
 
-      <p class="footer">Everything is stored locally in this browser using localStorage. Your repo can stay public without exposing keys because there are no keys.</p>
+      <p class="footer">Everything is stored locally in this browser using localStorage. Your GitHub repo can stay public because there are no keys.</p>
     </main>
   </div>
 
@@ -449,6 +506,9 @@
       const realNameInput = $("realName");
       const personaSelect = $("persona");
       const styleSelect = $("style");
+      const numbersSelect = $("numbers");
+      const placesSelect = $("places");
+      const strictnessSelect = $("strictness");
       const generateBtn = $("generateBtn");
       const copyAllBtn = $("copyAllBtn");
       const resetRunBtn = $("resetRunBtn");
@@ -462,11 +522,11 @@
       const toast = $("toast");
 
       const STORAGE = {
-        saved: "grimeder_noai_saved_names",
-        excluded: "grimeder_noai_excluded_names",
-        recent: "grimeder_noai_recent_names",
-        blocked: "grimeder_noai_blocked_words",
-        run: "grimeder_noai_run_count"
+        saved: "grimeder_v4_saved_names",
+        excluded: "grimeder_v4_excluded_names",
+        recent: "grimeder_v4_recent_names",
+        blocked: "grimeder_v4_blocked_words",
+        run: "grimeder_v4_run_count"
       };
 
       const DEFAULT_BLOCKED_WORDS = [
@@ -480,314 +540,144 @@
 
       const BANKS = {
         titlesAny: [
-          "Ace",
-          "Ghost",
-          "Kid",
-          "Boss",
-          "Capo",
-          "Murk",
-          "Saint",
-          "Rogue",
-          "Prez",
-          "Signal",
-          "Rebel",
-          "Major",
-          "Rapid",
-          "Hawk",
-          "Vex",
-          "Scout"
+          "Ace", "Ghost", "Kid", "Boss", "Capo", "Murk", "Saint", "Rogue",
+          "Prez", "Signal", "Rebel", "Major", "Rapid", "Hawk", "Vex", "Scout",
+          "Vandal", "Maestro", "Sarge", "Rascal", "Rook", "Spark"
         ],
 
         titlesMale: [
-          "Lord",
-          "King",
-          "Don",
-          "General",
-          "Baron",
-          "Mister",
-          "Sir",
-          "Duke",
-          "Major",
-          "Captain",
-          "Prince",
-          "Governor"
+          "Lord", "King", "Don", "General", "Baron", "Mister", "Sir", "Duke",
+          "Captain", "Prince", "Governor"
         ],
 
         titlesFemale: [
-          "Lady",
-          "Queen",
-          "Empress",
-          "Duchess",
-          "Madam",
-          "Miss",
-          "Princess",
-          "Countess",
-          "Maestra",
-          "Baroness",
-          "Saint",
-          "Dame"
+          "Lady", "Queen", "Empress", "Duchess", "Madam", "Miss", "Princess",
+          "Countess", "Maestra", "Baroness", "Dame"
         ],
 
-        textures: [
-          "Static",
-          "Chrome",
-          "Frost",
-          "Gravel",
-          "Diesel",
-          "Noir",
-          "Ash",
-          "Voltage",
-          "Sleet",
-          "Concrete",
-          "Rust",
-          "Bassline",
-          "Night",
-          "Signal",
-          "Smoke",
-          "Velvet",
-          "Pressure",
-          "Glitch",
-          "Hollow",
-          "Neon",
-          "Iron",
-          "Packet",
-          "Wraith",
-          "Echo",
-          "Tempo",
-          "Shiver",
-          "Quartz",
-          "Brass",
-          "Cinder",
-          "Rumble"
+        places: [
+          "Bow", "Peckham", "Tottenham", "Brixton", "Newham", "Hackney",
+          "Lewisham", "Croydon", "Woolwich", "Stratford", "Plaistow", "Acton",
+          "Hounslow", "Mitcham", "Deptford", "Clapton", "Ilford", "Barking",
+          "Camden", "Kilburn", "Twickenham", "Walthamstow", "Bethnal Green",
+          "Limehouse", "Whitechapel", "Stockwell", "Tooting", "Harlesden",
+          "Shepherds Bush", "Ladbroke Grove", "Finsbury Park", "Wood Green",
+          "Enfield", "Leyton", "Forest Gate", "Poplar", "Canning Town",
+          "Dalston", "Stoke Newington", "Walworth", "Catford", "Sydenham",
+          "Norwood", "Kingston", "Southall", "Ealing", "Brentford", "Richmond"
         ],
 
-        ukFlavour: [
-          "Bow",
-          "Peckham",
-          "Tottenham",
-          "Brixton",
-          "Newham",
-          "Hackney",
-          "Lewisham",
-          "Croydon",
-          "Woolwich",
-          "Stratford",
-          "Plaistow",
-          "Acton",
-          "Hounslow",
-          "Mitcham",
-          "Deptford",
-          "Clapton",
-          "Ilford",
-          "Barking",
-          "Camden",
-          "Kilburn",
-          "Twickenham",
-          "Walthamstow",
-          "Bethnal Green",
-          "Limehouse",
-          "Whitechapel",
-          "Stockwell",
-          "Tooting",
-          "Harlesden",
-          "Shepherds Bush",
-          "Ladbroke Grove",
-          "Finsbury Park",
-          "Wood Green",
-          "Enfield",
-          "Leyton",
-          "Forest Gate",
-          "Poplar",
-          "Canning Town",
-          "Dalston",
-          "Stoke Newington",
-          "Elephant",
-          "Walworth",
-          "Catford",
-          "Sydenham",
-          "Norwood",
-          "Kingston",
-          "Southall",
-          "Ealing",
-          "Brentford",
-          "Richmond"
+        radioTerms: [
+          "Reload", "Dubplate", "Rinse", "Pirate", "Antenna", "Signal",
+          "Frequency", "White Label", "Wheelup", "Set", "Booth", "Mic",
+          "Clash", "Transmission", "Static", "Deck", "Selector", "Tape",
+          "Mixtape", "Session", "Freestyle", "Boiler", "A-Side", "B-Side"
+        ],
+
+        soundWords: [
+          "Bass", "Sub", "Treble", "Reverb", "Delay", "Echo", "Kick",
+          "Snare", "HiHat", "Wobble", "Pulse", "Rumble", "Pressure",
+          "Tempo", "Fader", "Channel", "Gain", "Drum", "Break", "Wave",
+          "Feedback", "Static", "Amp", "Phaser"
+        ],
+
+        materialWords: [
+          "Concrete", "Chrome", "Iron", "Gravel", "Tarmac", "Brick", "Steel",
+          "Ash", "Smoke", "Neon", "Diesel", "Copper", "Velvet", "Rust",
+          "Glass", "Cinder", "Brass", "Quartz", "Sleet", "Frost", "Dust",
+          "Tar", "Slate", "Carbon"
+        ],
+
+        moodWords: [
+          "Noir", "Cold", "Hollow", "Lucid", "Lowkey", "Afterhours", "Night",
+          "Shadow", "Sable", "Blue Note", "Archive", "Fineprint", "Northside",
+          "Minimal", "Orbit", "Platinum", "Muse", "Softstep", "Clean Cut",
+          "Velour", "Signal", "Voltage"
+        ],
+
+        darkWords: [
+          "Grit", "Grave", "Fang", "Hooded", "Blade", "Sirens", "Trapdoor",
+          "Shutter", "Crow", "Nightbus", "Blackout", "Coldcase", "Rook",
+          "Lockjaw", "Wraith", "Hollow", "Sable", "Muzzle"
+        ],
+
+        wildWords: [
+          "Goblin", "Moped", "Binlid", "Teapot", "Pigeon", "Badger",
+          "Crumpet", "Boiler", "Barcode", "Turnstile", "Crisp", "Kettle",
+          "Nightbus", "Corner", "Crate", "Panic", "Packet", "Loose Tea"
+        ],
+
+        actions: [
+          "Spin", "Swerve", "Reload", "Shell", "Skank", "Dash", "Flow",
+          "Flip", "Wheel", "Charge", "Cut", "Spray", "Spark", "Drift",
+          "Duck", "Roll", "Stack", "Slide", "Snap", "Chop"
         ],
 
         endings: [
-          "line",
-          "storm",
-          "mode",
-          "pressure",
-          "talk",
-          "season",
-          "signal",
-          "reload",
-          "runner",
-          "sauce",
-          "shell",
-          "pulse",
-          "weight",
-          "style",
-          "tempo",
-          "charge",
-          "matter",
-          "logic",
-          "shift",
-          "dust",
-          "stack"
-        ],
-
-        foundation: [
-          "Eski",
-          "Reload",
-          "Pirate",
-          "Rinse",
-          "Shella",
-          "Spitter",
-          "Dubplate",
-          "White Label",
-          "Sidewinder",
-          "Eskimo",
-          "Garage",
-          "Mic",
-          "Clash",
-          "Wheelup",
-          "Meridian",
-          "Roller"
-        ],
-
-        modern: [
-          "Lucid",
-          "Velour",
-          "Minimal",
-          "Atlas",
-          "Navy",
-          "Softstep",
-          "Northside",
-          "Fineprint",
-          "Clean Cut",
-          "Lowkey",
-          "Orbit",
-          "Muse",
-          "Platinum",
-          "Archive",
-          "Blue Note",
-          "Afterhours"
-        ],
-
-        dark: [
-          "Grit",
-          "Grave",
-          "Fang",
-          "Hooded",
-          "Blade",
-          "Tarmac",
-          "Sirens",
-          "Trapdoor",
-          "Sable",
-          "Shutter",
-          "Crow",
-          "Nightbus",
-          "Blackout",
-          "Muzzle",
-          "Coldcase",
-          "Rook"
-        ],
-
-        wild: [
-          "Biscuit",
-          "Kebab",
-          "Goblin",
-          "Moped",
-          "Binlid",
-          "Teapot",
-          "Pigeon",
-          "Badger",
-          "Lollipop",
-          "Wotsit",
-          "Crumpet",
-          "Boiler",
-          "Barcode",
-          "Spreadsheet",
-          "Turnstile",
-          "Crisp"
+          "line", "storm", "mode", "pressure", "talk", "season", "reload",
+          "runner", "sauce", "shell", "pulse", "weight", "style", "tempo",
+          "charge", "matter", "logic", "shift", "dust", "stack", "pattern",
+          "print", "cut", "wave"
         ],
 
         suffixes: [
-          "MC",
-          "MCR",
-          "G",
-          "T",
-          "X",
-          "2x",
-          "3000",
-          "97",
-          "45",
-          "404",
-          "FM"
+          "MC", "MCR", "G", "X", "FM"
+        ],
+
+        rareNumbers: [
+          "45", "97", "101", "108", "247", "404"
         ]
       };
 
       const STYLE_CONFIG = {
         balanced: {
-          banks: ["textures", "foundation", "modern", "ukFlavour"],
+          banks: ["radioTerms", "soundWords", "materialWords", "moodWords"],
           templates: [
-            "titleName",
-            "initialTexture",
-            "placeTexture",
-            "singleBlend",
-            "textureEnding",
-            "nameSuffix",
-            "twoTexture"
+            "titleSyllable", "initialWord", "soundAlias", "radioAlias",
+            "materialAlias", "singleBlend", "theName", "nameSuffix", "actionName"
           ]
         },
 
         foundation: {
-          banks: ["foundation", "textures", "ukFlavour"],
+          banks: ["radioTerms", "soundWords", "materialWords"],
           templates: [
-            "titleName",
-            "initialTexture",
-            "placeTexture",
-            "textureEnding",
-            "nameSuffix",
-            "crewStyle"
+            "mcName", "radioAlias", "titleSyllable", "initialWord",
+            "soundAlias", "materialAlias", "actionName"
           ]
         },
 
         modern: {
-          banks: ["modern", "textures", "ukFlavour"],
+          banks: ["moodWords", "soundWords", "materialWords"],
           templates: [
-            "singleBlend",
-            "nameSuffix",
-            "twoTexture",
-            "titleName",
-            "textureEnding"
+            "singleBlend", "theName", "initialWord", "moodAlias",
+            "nameSuffix", "titleSyllable", "materialAlias"
           ]
         },
 
         dark: {
-          banks: ["dark", "textures", "ukFlavour"],
+          banks: ["darkWords", "materialWords", "soundWords"],
           templates: [
-            "placeTexture",
-            "initialTexture",
-            "textureEnding",
-            "twoTexture",
-            "nameSuffix"
+            "darkAlias", "materialAlias", "initialWord", "theName",
+            "singleBlend", "soundAlias", "actionName"
           ]
         },
 
         wild: {
-          banks: ["wild", "foundation", "textures", "ukFlavour"],
+          banks: ["wildWords", "radioTerms", "materialWords", "soundWords"],
           templates: [
-            "titleName",
-            "placeTexture",
-            "singleBlend",
-            "twoTexture",
-            "crewStyle",
-            "nameSuffix"
+            "wildAlias", "titleSyllable", "singleBlend", "theName",
+            "actionName", "radioAlias", "placeWord"
           ]
         }
       };
+
+      const QUALITY_WORDS = [
+        ...BANKS.radioTerms,
+        ...BANKS.soundWords,
+        ...BANKS.materialWords,
+        ...BANKS.moodWords,
+        ...BANKS.darkWords
+      ].map(w => w.toLowerCase());
 
       let currentNames = [];
 
@@ -819,7 +709,12 @@
         return normalize(str)
           .split(" ")
           .filter(Boolean)
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .map(word => {
+            if (word.toUpperCase() === "MC") return "MC";
+            if (word.toUpperCase() === "FM") return "FM";
+            if (word.toLowerCase() === "da") return "Da";
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+          })
           .join(" ");
       }
 
@@ -828,6 +723,7 @@
           .replace(/[^\w\s'-]/g, "")
           .replace(/\bMc\b/g, "MC")
           .replace(/\bFm\b/g, "FM")
+          .replace(/\bDa\b/g, "Da")
           .trim();
       }
 
@@ -859,22 +755,6 @@
         return rng() < percent;
       }
 
-      function uniquePush(arr, item, max) {
-        const clean = cleanName(item);
-
-        if (!clean) {
-          return arr;
-        }
-
-        const exists = arr.some(x => x.toLowerCase() === clean.toLowerCase());
-
-        if (!exists) {
-          arr.unshift(clean);
-        }
-
-        return arr.slice(0, max);
-      }
-
       function getBlockedWords() {
         const stored = getJSON(STORAGE.blocked, null);
         return Array.isArray(stored) ? stored : DEFAULT_BLOCKED_WORDS;
@@ -891,6 +771,22 @@
           .filter(Boolean);
 
         setJSON(STORAGE.blocked, [...new Set(words)]);
+      }
+
+      function uniquePush(arr, item, max) {
+        const clean = cleanName(item);
+
+        if (!clean) {
+          return arr;
+        }
+
+        const exists = arr.some(x => x.toLowerCase() === clean.toLowerCase());
+
+        if (!exists) {
+          arr.unshift(clean);
+        }
+
+        return arr.slice(0, max);
       }
 
       function extractNameParts(realName) {
@@ -934,60 +830,81 @@
           return [...BANKS.titlesFemale, ...BANKS.titlesAny];
         }
 
-        return [...BANKS.titlesAny, "Lord", "Lady", "Don", "Queen"];
+        return [...BANKS.titlesAny, "Lord", "Lady", "Don", "Queen", "Dame"];
       }
 
-      function styleWords(style, rng) {
+      function styleWord(style, rng) {
         const config = STYLE_CONFIG[style] || STYLE_CONFIG.balanced;
-        return BANKS[pick(config.banks, rng)];
+        const bankName = pick(config.banks, rng);
+        return pick(BANKS[bankName], rng);
       }
 
-      function makeNumber(realName, rng) {
-        const base = hashString(realName);
+      function chooseTemplate(style, placeMode, rng) {
+        const config = STYLE_CONFIG[style] || STYLE_CONFIG.balanced;
+        let templates = [...config.templates];
 
-        return pick([
-          String((base % 89) + 10),
-          String((base % 900) + 100),
-          String(Math.floor(rng() * 90) + 10),
-          pick(["45", "97", "404", "101", "108", "247", "360"], rng)
-        ], rng);
+        if (placeMode === "off") {
+          templates = templates.filter(t => !t.toLowerCase().includes("place"));
+        }
+
+        if (placeMode === "low" && maybe(0.86, rng)) {
+          templates = templates.filter(t => !t.toLowerCase().includes("place"));
+        }
+
+        if (placeMode === "medium" && !templates.includes("placeWord")) {
+          templates.push("placeWord");
+        }
+
+        return pick(templates.length ? templates : config.templates, rng);
       }
 
       function buildCandidate(context, rng) {
-        const { realName, persona, style, parts } = context;
-        const config = STYLE_CONFIG[style] || STYLE_CONFIG.balanced;
-        const template = pick(config.templates, rng);
+        const { persona, style, parts, numberMode, placeMode } = context;
+        const template = chooseTemplate(style, placeMode, rng);
+
         const title = pick(personaTitles(persona), rng);
-        const texture = pick(styleWords(style, rng), rng);
-        const texture2 = pick(BANKS.textures, rng);
-        const place = pick(BANKS.ukFlavour, rng);
+        const chosen = styleWord(style, rng);
+        const chosen2 = styleWord(style, rng);
+        const sound = pick(BANKS.soundWords, rng);
+        const radio = pick(BANKS.radioTerms, rng);
+        const material = pick(BANKS.materialWords, rng);
+        const mood = pick(BANKS.moodWords, rng);
+        const dark = pick(BANKS.darkWords, rng);
+        const wild = pick(BANKS.wildWords, rng);
+        const place = pick(BANKS.places, rng);
+        const action = pick(BANKS.actions, rng);
         const ending = pick(BANKS.endings, rng);
         const suffix = pick(BANKS.suffixes, rng);
         const syllable = parts.syllables.length ? pick(parts.syllables, rng) : parts.initials;
-        const initial = maybe(.72, rng) ? parts.initials : parts.first.charAt(0).toUpperCase();
-        const num = makeNumber(realName, rng);
+        const initial = maybe(0.78, rng) ? parts.initials : parts.first.charAt(0).toUpperCase();
 
         const templates = {
-          titleName: () => `${title} ${syllable}`,
-          initialTexture: () => `${initial} ${texture}`,
-          placeTexture: () => `${place} ${texture}`,
+          titleSyllable: () => `${title} ${syllable}`,
+          initialWord: () => `${initial} ${chosen}`,
+          soundAlias: () => `${sound} ${syllable}`,
+          radioAlias: () => `${radio} ${syllable}`,
+          materialAlias: () => `${material} ${syllable}`,
+          moodAlias: () => `${mood} ${syllable}`,
+          darkAlias: () => `${dark} ${syllable}`,
+          wildAlias: () => `${wild} ${syllable}`,
           singleBlend: () => `${syllable}${ending}`,
-          textureEnding: () => `${texture} ${ending}`,
+          theName: () => `The ${chosen}`,
           nameSuffix: () => `${syllable} ${suffix}`,
-          twoTexture: () => `${texture} ${texture2}`,
-          crewStyle: () => `${title} ${texture} ${maybe(.45, rng) ? num : "MC"}`
+          mcName: () => `MC ${syllable}`,
+          actionName: () => `${action} ${syllable}`,
+          placeWord: () => `${place} ${chosen2}`
         };
 
-        let name = (templates[template] || templates.titleName)();
+        let name = (templates[template] || templates.titleSyllable)();
 
-        if (maybe(.18, rng) && !/\d/.test(name)) {
-          name = `${name} ${num}`;
+        if (numberMode === "rare" && maybe(0.025, rng) && !/\d/.test(name)) {
+          name = `${name} ${pick(BANKS.rareNumbers, rng)}`;
         }
 
         return cleanName(titleCase(name));
       }
 
-      function isBlocked(name) {
+      function containsBlockedWord(name) {
         const hay = name.toLowerCase();
 
         return getBlockedWords().some(word => {
@@ -1014,6 +931,84 @@
         });
       }
 
+      function hasPlace(name) {
+        const lower = name.toLowerCase();
+        return BANKS.places.some(place => lower.includes(place.toLowerCase()));
+      }
+
+      function scoreName(name, context, avoidList) {
+        const lower = name.toLowerCase();
+        const words = name.split(/\s+/).filter(Boolean);
+        let score = 0;
+
+        if (!/\d/.test(name)) score += 8;
+        if (words.length === 1) score += 3;
+        if (words.length === 2) score += 7;
+        if (words.length === 3) score += 1;
+        if (words.length > 3) score -= 10;
+
+        if (lower.includes(context.parts.initials.toLowerCase())) {
+          score += 4;
+        }
+
+        for (const syllable of context.parts.syllables) {
+          if (syllable.length > 1 && lower.includes(syllable.toLowerCase())) {
+            score += 4;
+            break;
+          }
+        }
+
+        if (QUALITY_WORDS.some(word => lower.includes(word))) {
+          score += 4;
+        }
+
+        if (lower.startsWith("the ")) {
+          score += 1;
+        }
+
+        if (lower.startsWith("mc ")) {
+          score += 2;
+        }
+
+        if (hasPlace(name)) {
+          score += context.placeMode === "medium" ? 1 : -3;
+        }
+
+        if (context.style !== "wild") {
+          const wildHit = BANKS.wildWords.some(word => lower.includes(word.toLowerCase()));
+
+          if (wildHit) {
+            score -= 10;
+          }
+        }
+
+        if (/\d/.test(name)) {
+          score += context.numberMode === "rare" ? -2 : -16;
+        }
+
+        if (isTooSimilar(name, avoidList)) {
+          score -= 12;
+        }
+
+        const crudeOrTooSilly = ["wotsit", "lollipop", "spreadsheet"];
+
+        if (crudeOrTooSilly.some(word => lower.includes(word))) {
+          score -= 8;
+        }
+
+        if (context.strictness === "strict") {
+          if (words.length > 2) score -= 8;
+          if (hasPlace(name)) score -= 3;
+          if (lower.includes(" da ")) score -= 3;
+        }
+
+        if (context.strictness === "loose") {
+          score += Math.floor(Math.random() * 3);
+        }
+
+        return score;
+      }
+
       function generateNames() {
         const realName = normalize(realNameInput.value);
 
@@ -1029,56 +1024,65 @@
           return;
         }
 
-        const persona = personaSelect.value;
-        const style = styleSelect.value;
         const run = Number(localStorage.getItem(STORAGE.run) || "0") + 1;
 
         localStorage.setItem(STORAGE.run, String(run));
         generationCount.textContent = `Run ${run}`;
 
-        const seed = hashString(`${realName}|${persona}|${style}|${run}|${Date.now()}`);
-        const rng = mulberry32(seed);
+        const context = {
+          realName,
+          persona: personaSelect.value,
+          style: styleSelect.value,
+          numberMode: numbersSelect.value,
+          placeMode: placesSelect.value,
+          strictness: strictnessSelect.value,
+          parts: extractNameParts(realName)
+        };
+
+        const rng = mulberry32(hashString(`${realName}|${context.persona}|${context.style}|${run}|${Date.now()}`));
+        const saved = getJSON(STORAGE.saved, []);
         const excluded = getJSON(STORAGE.excluded, []);
         const recent = getJSON(STORAGE.recent, []);
-        const parts = extractNameParts(realName);
-        const context = { realName, persona, style, parts };
-        const results = [];
+        const avoidList = [...saved, ...excluded, ...recent];
 
+        const pool = [];
         let attempts = 0;
 
-        while (results.length < 5 && attempts < 300) {
+        while (attempts < 520) {
           attempts++;
 
           const candidate = buildCandidate(context, rng);
 
-          if (!candidate) {
-            continue;
-          }
+          if (!candidate) continue;
+          if (containsBlockedWord(candidate)) continue;
+          if (context.numberMode === "off" && /\d/.test(candidate)) continue;
+          if (context.strictness !== "loose" && candidate.split(/\s+/).length > 3) continue;
 
-          if (isBlocked(candidate)) {
-            continue;
-          }
+          const duplicate = pool.some(item => item.name.toLowerCase() === candidate.toLowerCase());
 
-          if (isTooSimilar(candidate, [...results, ...excluded, ...recent])) {
-            continue;
-          }
+          if (duplicate) continue;
 
-          results.push(candidate);
+          pool.push({
+            name: candidate,
+            score: scoreName(candidate, context, avoidList)
+          });
         }
 
-        while (results.length < 5 && attempts < 420) {
-          attempts++;
-
-          const fallback = cleanName(`${parts.initials} ${pick(BANKS.textures, rng)} ${makeNumber(realName, rng)}`);
-
-          if (!isBlocked(fallback) && !isTooSimilar(fallback, results)) {
-            results.push(fallback);
-          }
-        }
+        const results = pool
+          .sort((a, b) => b.score - a.score)
+          .filter((item, index, arr) => {
+            const previous = arr.slice(0, index).map(x => x.name);
+            return !isTooSimilar(item.name, previous);
+          })
+          .slice(0, 5)
+          .map(item => item.name);
 
         currentNames = results;
-        setJSON(STORAGE.recent, [...results, ...recent].slice(0, 30));
+
+        setJSON(STORAGE.recent, [...results, ...recent].slice(0, 36));
+
         renderNames(results);
+
         copyAllBtn.disabled = results.length === 0;
       }
 
@@ -1088,7 +1092,7 @@
         if (!names.length) {
           const p = document.createElement("p");
           p.className = "empty";
-          p.textContent = "Nothing made it through the filters. Loosen the blocked words and try again.";
+          p.textContent = "Nothing made it through the filters. Loosen the settings and try again.";
 
           nameList.appendChild(p);
           return;
@@ -1151,7 +1155,7 @@
         const saved = getJSON(STORAGE.saved, []);
         const excluded = getJSON(STORAGE.excluded, []);
 
-        setJSON(STORAGE.saved, uniquePush(saved, name, 20));
+        setJSON(STORAGE.saved, uniquePush(saved, name, 24));
         setJSON(STORAGE.excluded, excluded.filter(n => n.toLowerCase() !== name.toLowerCase()));
 
         renderSaved();
@@ -1161,7 +1165,7 @@
         const excluded = getJSON(STORAGE.excluded, []);
         const saved = getJSON(STORAGE.saved, []);
 
-        setJSON(STORAGE.excluded, uniquePush(excluded, name, 40));
+        setJSON(STORAGE.excluded, uniquePush(excluded, name, 60));
         setJSON(STORAGE.saved, saved.filter(n => n.toLowerCase() !== name.toLowerCase()));
 
         renderSaved();
